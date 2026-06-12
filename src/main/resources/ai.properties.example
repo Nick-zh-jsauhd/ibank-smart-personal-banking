@@ -1,0 +1,18 @@
+# Copy this file to src/main/resources/ai.properties when AI features are needed.
+# Keep API keys and private endpoints out of git.
+
+# local or deepseek
+ai.provider=local
+
+# Local OpenAI-compatible LLM endpoint, for example llama.cpp / vLLM / Ollama bridge.
+ai.local.baseUrl=http://127.0.0.1:18080/v1
+ai.local.model=qwen3:8b
+
+# Optional remote provider. Leave empty unless you explicitly accept the privacy risk.
+ai.deepseek.apiKey=
+ai.deepseek.baseUrl=https://api.deepseek.com
+ai.deepseek.model=deepseek-chat
+
+# Conservative request controls for banking scenarios.
+ai.timeoutMillis=20000
+ai.maxPromptChars=6000

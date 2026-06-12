@@ -1,0 +1,30 @@
+<%@ page pageEncoding="UTF-8" import="com.bank.dto.SessionUser,com.bank.util.HtmlUtil" %>
+<%
+    SessionUser navUser = (SessionUser) session.getAttribute("loginUser");
+    String navActive = (String) request.getAttribute("activeNav");
+    if (navActive == null) {
+        navActive = "";
+    }
+%>
+<header class="topbar customer-topbar">
+    <a class="brand" href="<%= request.getContextPath() %>/dashboard">iBank</a>
+    <nav class="main-nav">
+        <a class="<%= "dashboard".equals(navActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/dashboard">工作台</a>
+        <a class="<%= "assistant".equals(navActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/assistant">助手</a>
+        <a class="<%= "accounts".equals(navActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/accounts">账户</a>
+        <a class="<%= "transfer".equals(navActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/transfer">转账</a>
+        <a class="<%= "wealth".equals(navActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/wealth/products">理财</a>
+        <a class="<%= "transactions".equals(navActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/transactions">流水</a>
+        <a class="<%= "bill".equals(navActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/bill/report">收支报表</a>
+        <a class="<%= "service".equals(navActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/tickets">服务</a>
+        <a class="<%= "security".equals(navActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/security/pay-password">安全</a>
+    </nav>
+    <div class="user-zone">
+        <span><%= navUser == null ? "" : HtmlUtil.escape(navUser.getFullName()) %></span>
+        <a href="<%= request.getContextPath() %>/logout">退出</a>
+    </div>
+</header>
+<a class="ai-assistant-fab <%= "assistant".equals(navActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/assistant" aria-label="打开小 i 助手">
+    <span>小 i</span>
+    <strong>AI助手</strong>
+</a>

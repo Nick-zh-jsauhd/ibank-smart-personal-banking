@@ -1,0 +1,121 @@
+<%@ page pageEncoding="UTF-8" import="com.bank.dto.AdminSessionUser,com.bank.util.HtmlUtil" %>
+<%
+    AdminSessionUser navAdminUser = (AdminSessionUser) session.getAttribute("adminUser");
+    String adminActive = (String) request.getAttribute("activeNav");
+    String adminPath = request.getRequestURI();
+    if (adminActive == null) {
+        if (adminPath != null && adminPath.contains("/admin/customer")) {
+            adminActive = "customers";
+        } else if (adminPath != null && adminPath.contains("/admin/risk/graph-models")) {
+            adminActive = "risk-graph-models";
+        } else if (adminPath != null && adminPath.contains("/admin/risk/graph-case")) {
+            adminActive = "risk-graph-cases";
+        } else if (adminPath != null && adminPath.contains("/admin/risk/graph-scores")) {
+            adminActive = "risk-graph-scores";
+        } else if (adminPath != null && adminPath.contains("/admin/risk/rules")) {
+            adminActive = "risk-rules";
+        } else if (adminPath != null && adminPath.contains("/admin/risk/")) {
+            adminActive = "risk-events";
+        } else if (adminPath != null && adminPath.contains("/admin/wealth/settlement")) {
+            adminActive = "wealth-settlement";
+        } else if (adminPath != null && adminPath.contains("/admin/wealth/")) {
+            adminActive = "wealth";
+        } else if (adminPath != null && adminPath.contains("/admin/message")) {
+            adminActive = "messages";
+        } else if (adminPath != null && adminPath.contains("/admin/ticket")) {
+            adminActive = "tickets";
+        } else if (adminPath != null && adminPath.contains("/admin/reconciliation")) {
+            adminActive = "reconciliation";
+        } else if (adminPath != null && adminPath.contains("/admin/adjustment")) {
+            adminActive = "adjustments";
+        } else if (adminPath != null && adminPath.contains("/admin/audit")) {
+            adminActive = "audit";
+        } else if (adminPath != null && adminPath.contains("/admin/security/roles")) {
+            adminActive = "security-roles";
+        } else if (adminPath != null && adminPath.contains("/admin/security/admin")) {
+            adminActive = "security-admins";
+        } else {
+            adminActive = "dashboard";
+        }
+    }
+%>
+<header class="admin-command-bar">
+    <a class="brand admin-brand" href="<%= request.getContextPath() %>/admin/dashboard">
+        <span class="admin-brand-mark">iB</span>
+        <span>iBank Control</span>
+    </a>
+    <div class="admin-command-search">
+        <span>运营控制台</span>
+        <strong><%= navAdminUser == null ? "" : HtmlUtil.escape(navAdminUser.getUsername()) %></strong>
+    </div>
+    <div class="user-zone admin-user-zone">
+        <span><%= navAdminUser == null ? "" : HtmlUtil.escape(navAdminUser.getRoleCodes().toString()) %></span>
+        <a href="<%= request.getContextPath() %>/admin/logout">退出</a>
+    </div>
+</header>
+
+<aside class="admin-sidebar">
+    <nav class="admin-side-nav">
+        <div class="admin-nav-group">
+            <span>Overview</span>
+            <% if (navAdminUser != null && navAdminUser.hasPermission("ADMIN_DASHBOARD_VIEW")) { %>
+                <a class="<%= "dashboard".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/dashboard">首页总览</a>
+            <% } %>
+        </div>
+        <div class="admin-nav-group">
+            <span>Operations</span>
+            <% if (navAdminUser != null && navAdminUser.hasPermission("ADMIN_ALERT_VIEW")) { %>
+                <a class="<%= "messages".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/messages">消息待办</a>
+            <% } %>
+            <% if (navAdminUser != null && navAdminUser.hasPermission("TICKET_VIEW")) { %>
+                <a class="<%= "tickets".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/tickets">服务工单</a>
+            <% } %>
+            <% if (navAdminUser != null && navAdminUser.hasPermission("CUSTOMER_VIEW")) { %>
+                <a class="<%= "customers".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/customers">客户运营</a>
+            <% } %>
+        </div>
+        <div class="admin-nav-group">
+            <span>Risk & Products</span>
+            <% if (navAdminUser != null && navAdminUser.hasPermission("RISK_EVENT_VIEW")) { %>
+                <a class="<%= "risk-events".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/risk/events">风控事件</a>
+            <% } %>
+            <% if (navAdminUser != null && navAdminUser.hasPermission("RISK_GRAPH_SCORE_VIEW")) { %>
+                <a class="<%= "risk-graph-scores".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/risk/graph-scores">GNN评分</a>
+                <a class="<%= "risk-graph-models".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/risk/graph-models">GNN模型</a>
+            <% } %>
+            <% if (navAdminUser != null && navAdminUser.hasPermission("RISK_GRAPH_CASE_VIEW")) { %>
+                <a class="<%= "risk-graph-cases".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/risk/graph-cases">GNN复核</a>
+            <% } %>
+            <% if (navAdminUser != null && navAdminUser.hasPermission("RISK_RULE_VIEW")) { %>
+                <a class="<%= "risk-rules".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/risk/rules">风控规则</a>
+            <% } %>
+            <% if (navAdminUser != null && navAdminUser.hasPermission("WEALTH_PRODUCT_VIEW")) { %>
+                <a class="<%= "wealth".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/wealth/products">理财产品</a>
+            <% } %>
+            <% if (navAdminUser != null && navAdminUser.hasPermission("WEALTH_SETTLEMENT_VIEW")) { %>
+                <a class="<%= "wealth-settlement".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/wealth/settlement">理财清算</a>
+            <% } %>
+        </div>
+        <div class="admin-nav-group">
+            <span>Finance Control</span>
+            <% if (navAdminUser != null && navAdminUser.hasPermission("RECONCILIATION_VIEW")) { %>
+                <a class="<%= "reconciliation".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/reconciliation">账务对账</a>
+            <% } %>
+            <% if (navAdminUser != null && navAdminUser.hasPermission("ADJUSTMENT_VIEW")) { %>
+                <a class="<%= "adjustments".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/adjustments">调账申请</a>
+            <% } %>
+        </div>
+        <div class="admin-nav-group">
+            <span>Governance</span>
+            <% if (navAdminUser != null && navAdminUser.hasPermission("ADMIN_AUDIT_VIEW")) { %>
+                <a class="<%= "audit".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/audit">审计中心</a>
+            <% } %>
+            <% if (navAdminUser != null && navAdminUser.hasPermission("ADMIN_USER_VIEW")) { %>
+                <a class="<%= "security-admins".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/security/admins">管理员</a>
+            <% } %>
+            <% if (navAdminUser != null && navAdminUser.hasPermission("ROLE_PERMISSION_VIEW")) { %>
+                <a class="<%= "security-roles".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/security/roles">角色权限</a>
+            <% } %>
+        </div>
+    </nav>
+</aside>
