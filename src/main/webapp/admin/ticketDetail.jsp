@@ -86,7 +86,7 @@
 
 <main class="layout layout-wide">
     <section class="page-heading">
-        <p class="eyebrow">Ticket Detail</p>
+        <p class="eyebrow">工单详情</p>
         <h1>工单处理</h1>
         <p class="muted">后台处理动作会同步给客户通知，并自动更新后台待办状态。</p>
     </section>

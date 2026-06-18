@@ -39,7 +39,7 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Accounts</p>
+            <p class="eyebrow">账户资产</p>
             <h1>账户资产</h1>
             <p class="muted">按账户查看可用余额、冻结余额、开户行和状态。</p>
         </div>

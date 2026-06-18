@@ -73,7 +73,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Ticket Center</p>
+        <p class="eyebrow">工单中心</p>
         <h1>客户服务工单</h1>
         <p class="muted">统一承接客户服务请求、交易争议和风控申诉，并通过状态流转完成处理闭环。</p>
     </section>

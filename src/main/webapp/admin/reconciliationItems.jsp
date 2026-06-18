@@ -26,6 +26,19 @@
         return checkType == null ? "" : checkType;
     }
 
+    private String businessTypeName(String businessType) {
+        if ("DEPOSIT".equals(businessType)) return "存款";
+        if ("WITHDRAW".equals(businessType)) return "取款";
+        if ("TRANSFER_INNER".equals(businessType)) return "本行转账";
+        if ("PAYMENT".equals(businessType)) return "生活缴费";
+        if ("BUY_WEALTH".equals(businessType)) return "理财申购";
+        if ("REDEEM_WEALTH".equals(businessType)) return "理财赎回";
+        if ("ACCOUNT".equals(businessType)) return "账户";
+        if ("VERIFY".equals(businessType)) return "系统核验";
+        if ("RISK".equals(businessType)) return "风控";
+        return checkTypeName(businessType);
+    }
+
     private String severityName(String severity) {
         if ("CRITICAL".equals(severity)) return "严重";
         if ("WARN".equals(severity)) return "警告";
@@ -56,7 +69,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Reconciliation Exceptions</p>
+        <p class="eyebrow">对账异常</p>
         <h1>对账异常处理中心</h1>
         <p class="muted">集中查看、接手和关闭对账异常。当前版本只记录人工处置结论，不自动修改账户、流水或持仓。</p>
     </section>
@@ -141,7 +154,7 @@
                         <td><%= item.getReconDate() == null ? "" : item.getReconDate().toString() %></td>
                         <td><%= HtmlUtil.escape(checkTypeName(item.getCheckType())) %></td>
                         <td><span class="<%= "CRITICAL".equals(item.getSeverity()) ? "direction direction-out" : "tag" %>"><%= severityName(item.getSeverity()) %></span></td>
-                        <td><%= HtmlUtil.escape(item.getBusinessType()) %></td>
+                        <td><%= HtmlUtil.escape(businessTypeName(item.getBusinessType())) %></td>
                         <td><strong><%= HtmlUtil.escape(item.getBusinessId()) %></strong></td>
                         <td><%= HtmlUtil.escape(item.getExpectedValue()) %></td>
                         <td><%= HtmlUtil.escape(item.getActualValue()) %></td>

@@ -133,7 +133,7 @@
 <head>
     <meta charset="UTF-8">
     <title>收支分析报表 - iBank</title>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/main.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/main.css?v=report-layout-20260615a">
 </head>
 <body class="customer-page report-page">
 <%@ include file="/WEB-INF/jsp/customerTopbar.jspf" %>
@@ -141,7 +141,7 @@
 <main class="layout report-layout">
     <section class="compact-page-head report-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Income & Expense Report</p>
+            <p class="eyebrow">收支分析</p>
             <h1>收支分析报表</h1>
             <p class="muted">按日、月、年复盘账户现金流，导出明细用于对账，打印报表用于留存。</p>
         </div>
@@ -268,8 +268,9 @@
             </article>
         </section>
 
-        <section class="report-main-grid">
-            <article class="content-section report-chart-card">
+        <section class="report-analysis-grid">
+            <div class="report-analysis-primary">
+            <article class="content-section report-chart-card report-card-trend">
                 <div class="section-title">
                     <div>
                         <h2>收支趋势</h2>
@@ -280,52 +281,39 @@
                         <span class="legend-expense">支出</span>
                     </div>
                 </div>
-                <div class="report-bar-chart <%= dayPeriod ? "report-bar-day" : (yearPeriod ? "report-bar-year" : "report-bar-month") %>">
-                    <% for (TimeBucketSummary bucket : report.getTimeBuckets()) { %>
-                        <div class="report-bar-column" title="<%= HtmlUtil.escape(bucket.getBucketLabel()) %> 收入 ¥<%= moneyText(bucket.getTotalIncome()) %>，支出 ¥<%= moneyText(bucket.getTotalExpense()) %>">
-                            <div class="report-bar-stack">
-                                <span class="report-bar income" style="height:<%= percent(bucket.getTotalIncome(), maxBucket) %>%"></span>
-                                <span class="report-bar expense" style="height:<%= percent(bucket.getTotalExpense(), maxBucket) %>%"></span>
-                            </div>
-                            <em><%= HtmlUtil.escape(bucket.getBucketLabel()) %></em>
-                        </div>
-                    <% } %>
-                </div>
-            </article>
-
-            <aside class="content-section">
-                <div class="section-title">
-                    <div>
-                        <h2>分类分析</h2>
-                        <p class="section-note">按交易类型和收支方向聚合，帮助定位主要资金流向。</p>
+                <div class="report-flow-board <%= dayPeriod ? "report-flow-day" : (yearPeriod ? "report-flow-year" : "report-flow-month") %>">
+                    <div class="report-flow-scroll" aria-label="收支趋势，可横向滑动查看更多时间点">
+                        <% List<TimeBucketSummary> timeBuckets = report.getTimeBuckets();
+                        if (timeBuckets != null) {
+                            for (TimeBucketSummary bucket : timeBuckets) {
+                            BigDecimal incomeAmount = bucket.getTotalIncome() == null ? BigDecimal.ZERO : bucket.getTotalIncome();
+                            BigDecimal expenseAmount = bucket.getTotalExpense() == null ? BigDecimal.ZERO : bucket.getTotalExpense();
+                            BigDecimal netAmount = incomeAmount.subtract(expenseAmount);
+                            boolean netIncome = netAmount.compareTo(BigDecimal.ZERO) >= 0;
+                        %>
+                            <article class="report-flow-point <%= netIncome ? "net-in" : "net-out" %>"
+                                     title="<%= HtmlUtil.escape(bucket.getBucketLabel()) %> 收入 ¥<%= moneyText(incomeAmount) %>，支出 ¥<%= moneyText(expenseAmount) %>">
+                                <div class="flow-label">
+                                    <strong><%= HtmlUtil.escape(bucket.getBucketLabel()) %></strong>
+                                    <span><%= netIncome ? "净流入" : "净流出" %> ¥ <%= moneyText(netAmount.abs()) %></span>
+                                </div>
+                                <div class="flow-rails" aria-hidden="true">
+                                    <div class="flow-rail income"><span style="width:<%= percent(incomeAmount, maxBucket) %>%"></span></div>
+                                    <div class="flow-rail expense"><span style="width:<%= percent(expenseAmount, maxBucket) %>%"></span></div>
+                                </div>
+                                <div class="flow-amounts">
+                                    <span class="money-in">收 ¥ <%= moneyText(incomeAmount) %></span>
+                                    <span class="money-out">支 ¥ <%= moneyText(expenseAmount) %></span>
+                                </div>
+                            </article>
+                        <%  }
+                        } %>
                     </div>
                 </div>
-                <div class="category-list report-category-list">
-                    <% if (report.getCategories() == null || report.getCategories().isEmpty()) { %>
-                        <div class="human-empty">
-                            <strong>这个周期还没有形成分类统计。</strong>
-                            <p>完成转账、缴费、存取款或理财交易后，系统会自动把流水归入对应类别。</p>
-                        </div>
-                    <% } else {
-                        for (CategorySummary category : report.getCategories()) {
-                            BigDecimal categoryBase = "IN".equals(category.getDirection()) ? maxIncomeCategory : maxExpenseCategory;
-                    %>
-                        <div class="category-item">
-                            <div class="category-head">
-                                <span><%= HtmlUtil.escape(txnTypeName(category.getTxnType())) %> · <%= HtmlUtil.escape(directionName(category.getDirection())) %></span>
-                                <strong>¥ <%= moneyText(category.getTotalAmount()) %></strong>
-                            </div>
-                            <div class="cashflow-track"><div class="cashflow-fill <%= "IN".equals(category.getDirection()) ? "income" : "expense" %>" style="width: <%= percent(category.getTotalAmount(), categoryBase) %>%"></div></div>
-                            <small><%= category.getEntryCount() %> 笔</small>
-                        </div>
-                    <%  }
-                    } %>
-                </div>
-            </aside>
-        </section>
+                <p class="report-chart-hint no-print">横向滑动查看更多时间点，悬停可查看该时点收支明细</p>
+            </article>
 
-        <section class="report-secondary-grid">
-            <article class="content-section">
+            <article class="content-section report-card-movements">
                 <div class="section-title">
                     <div>
                         <h2>关键资金流动</h2>
@@ -353,8 +341,40 @@
                     } %>
                 </div>
             </article>
+            </div>
 
-            <aside class="next-step-panel report-next-step">
+            <aside class="report-analysis-side">
+            <article class="content-section report-card-category">
+                <div class="section-title">
+                    <div>
+                        <h2>分类分析</h2>
+                        <p class="section-note">按交易类型和收支方向聚合，帮助定位主要资金流向。</p>
+                    </div>
+                </div>
+                <div class="category-list report-category-list">
+                    <% if (report.getCategories() == null || report.getCategories().isEmpty()) { %>
+                        <div class="human-empty">
+                            <strong>这个周期还没有形成分类统计。</strong>
+                            <p>完成转账、缴费、存取款或理财交易后，系统会自动把流水归入对应类别。</p>
+                        </div>
+                    <% } else {
+                        for (CategorySummary category : report.getCategories()) {
+                            BigDecimal categoryBase = "IN".equals(category.getDirection()) ? maxIncomeCategory : maxExpenseCategory;
+                    %>
+                        <div class="category-item">
+                            <div class="category-head">
+                                <span><%= HtmlUtil.escape(txnTypeName(category.getTxnType())) %> · <%= HtmlUtil.escape(directionName(category.getDirection())) %></span>
+                                <strong>¥ <%= moneyText(category.getTotalAmount()) %></strong>
+                            </div>
+                            <div class="cashflow-track"><div class="cashflow-fill <%= "IN".equals(category.getDirection()) ? "income" : "expense" %>" style="width: <%= percent(category.getTotalAmount(), categoryBase) %>%"></div></div>
+                            <small><%= category.getEntryCount() %> 笔</small>
+                        </div>
+                    <%  }
+                    } %>
+                </div>
+            </article>
+
+            <section class="next-step-panel report-next-step">
                 <strong>下一步建议</strong>
                 <p><%= HtmlUtil.escape(report.getNextStepText()) %></p>
                 <ul class="task-checklist">
@@ -362,6 +382,7 @@
                     <li>打印报表会自动隐藏导航和按钮，保留账单摘要与明细。</li>
                     <li>如果发现异常大额支出，请进入安全中心或服务中心处理。</li>
                 </ul>
+            </section>
             </aside>
         </section>
 

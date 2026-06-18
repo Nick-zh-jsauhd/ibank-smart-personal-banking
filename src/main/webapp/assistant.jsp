@@ -18,6 +18,19 @@
     private String displayQuestion(String question) {
         return question == null || question.trim().length() == 0 ? "" : question.trim();
     }
+
+    private String intentName(String intent) {
+        if ("WELCOME".equals(intent)) return "业务规则";
+        if ("BILL".equals(intent)) return "账单解读";
+        if ("TRANSACTION".equals(intent)) return "流水解读";
+        if ("RISK".equals(intent)) return "风险解释";
+        if ("SERVICE".equals(intent)) return "服务进度";
+        if ("WEALTH".equals(intent)) return "理财匹配";
+        if ("NOTICE".equals(intent)) return "通知待办";
+        if ("SECURITY".equals(intent)) return "安全提醒";
+        if ("FALLBACK".equals(intent)) return "问题引导";
+        return "业务解释";
+    }
 %>
 <%
     SessionUser loginUser = (SessionUser) session.getAttribute("loginUser");
@@ -46,7 +59,7 @@
 
     <section class="assistant-hero">
         <div class="assistant-hero-copy">
-            <p class="eyebrow">iBank AI Assistant</p>
+            <p class="eyebrow">小 i 助手</p>
             <h1>小 i 帮你先读懂账户、账单、风险和待办。</h1>
             <p class="section-note">它会基于当前系统数据做解释和导航，不替你提交任何资金类操作。需要转账、缴费、理财或改密码时，仍由你本人在业务页面确认。</p>
         </div>
@@ -119,7 +132,7 @@
         <section class="assistant-reply-panel">
             <div class="assistant-reply-head">
                 <div>
-                    <p class="eyebrow"><%= HtmlUtil.escape(reply.getIntent()) %></p>
+                    <p class="eyebrow"><%= HtmlUtil.escape(intentName(reply.getIntent())) %></p>
                     <h2><%= HtmlUtil.escape(reply.getTitle()) %></h2>
                     <p class="section-note"><%= HtmlUtil.escape(reply.getSummary()) %></p>
                 </div>

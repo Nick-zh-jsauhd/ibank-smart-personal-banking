@@ -804,6 +804,57 @@ CREATE TABLE IF NOT EXISTS t_risk_graph_review_case (
     FOREIGN KEY (reviewed_by_admin_id) REFERENCES t_user (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE IF NOT EXISTS t_simulation_run (
+  run_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  run_code VARCHAR(64) NOT NULL,
+  scenario_code VARCHAR(40) NOT NULL,
+  scenario_name VARCHAR(80) NOT NULL,
+  status VARCHAR(30) NOT NULL DEFAULT 'RUNNING',
+  speed VARCHAR(30) NOT NULL DEFAULT 'NORMAL',
+  requested_event_count INT NOT NULL DEFAULT 0,
+  success_event_count INT NOT NULL DEFAULT 0,
+  failure_event_count INT NOT NULL DEFAULT 0,
+  risk_event_count INT NOT NULL DEFAULT 0,
+  admin_user_id BIGINT NULL,
+  config_json TEXT NULL,
+  summary VARCHAR(500) NULL,
+  error_message VARCHAR(1000) NULL,
+  started_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  completed_at DATETIME NULL,
+  UNIQUE KEY uk_simulation_run_code (run_code),
+  KEY idx_simulation_run_started_at (started_at),
+  KEY idx_simulation_run_status (status),
+  KEY idx_simulation_run_admin (admin_user_id),
+  CONSTRAINT fk_simulation_run_admin
+    FOREIGN KEY (admin_user_id) REFERENCES t_user (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS t_simulation_event (
+  event_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  run_id BIGINT NOT NULL,
+  event_sequence INT NOT NULL,
+  event_type VARCHAR(50) NOT NULL,
+  business_type VARCHAR(50) NULL,
+  business_id VARCHAR(80) NULL,
+  customer_id BIGINT NULL,
+  account_id BIGINT NULL,
+  amount DECIMAL(18,2) NULL,
+  status VARCHAR(30) NOT NULL DEFAULT 'RECORDED',
+  message VARCHAR(500) NULL,
+  payload_json TEXT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  KEY idx_simulation_event_run (run_id, event_sequence),
+  KEY idx_simulation_event_created_at (created_at),
+  KEY idx_simulation_event_status (status),
+  KEY idx_simulation_event_customer (customer_id),
+  CONSTRAINT fk_simulation_event_run
+    FOREIGN KEY (run_id) REFERENCES t_simulation_run (run_id),
+  CONSTRAINT fk_simulation_event_customer
+    FOREIGN KEY (customer_id) REFERENCES t_customer (customer_id),
+  CONSTRAINT fk_simulation_event_account
+    FOREIGN KEY (account_id) REFERENCES t_account (account_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE IF NOT EXISTS t_admin_role (
   role_id BIGINT PRIMARY KEY AUTO_INCREMENT,
   role_code VARCHAR(50) NOT NULL,

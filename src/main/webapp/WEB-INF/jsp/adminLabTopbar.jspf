@@ -1,0 +1,66 @@
+<%@ page pageEncoding="UTF-8" import="com.bank.dto.AdminSessionUser,com.bank.util.AdminRoleDisplayUtil,com.bank.util.HtmlUtil" %>
+<%
+    AdminSessionUser labAdminUser = (AdminSessionUser) session.getAttribute("adminUser");
+    String labActive = (String) request.getAttribute("activeNav");
+    String labPath = request.getRequestURI();
+    if (labActive == null) {
+        if (labPath != null && labPath.contains("/admin/simulation")) {
+            labActive = "simulation";
+        } else if (labPath != null && labPath.contains("/admin/risk/graph-models")) {
+            labActive = "risk-graph-models";
+        } else if (labPath != null && labPath.contains("/admin/risk/graph-case")) {
+            labActive = "risk-graph-cases";
+        } else if (labPath != null && labPath.contains("/admin/risk/graph-scores")) {
+            labActive = "risk-graph-scores";
+        } else {
+            labActive = "lab";
+        }
+    }
+%>
+<header class="admin-command-bar lab-command-bar">
+    <a class="brand admin-brand lab-brand" href="<%= request.getContextPath() %>/admin/lab">
+        <span class="admin-brand-mark lab-brand-mark">RB</span>
+        <span>智能风控实验室</span>
+    </a>
+    <div class="admin-command-search lab-command-search">
+        <span>智能风控实验室</span>
+        <strong>模型、图谱、反馈与仿真治理</strong>
+    </div>
+    <div class="user-zone admin-user-zone lab-user-zone">
+        <span><%= labAdminUser == null ? "" : HtmlUtil.escape(AdminRoleDisplayUtil.roleSummary(labAdminUser.getRoleCodes())) %></span>
+        <a href="<%= request.getContextPath() %>/admin/platform">平台选择</a>
+        <a href="<%= request.getContextPath() %>/admin/logout">退出</a>
+    </div>
+</header>
+
+<aside class="admin-sidebar lab-sidebar">
+    <nav class="admin-side-nav">
+        <div class="admin-nav-group">
+            <span>实验室</span>
+            <% if (labAdminUser != null && labAdminUser.hasPermission("ADMIN_DASHBOARD_VIEW")) { %>
+                <a class="<%= "lab".equals(labActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/lab">实验室首页</a>
+            <% } %>
+        </div>
+        <div class="admin-nav-group">
+            <span>图谱智能</span>
+            <% if (labAdminUser != null && labAdminUser.hasPermission("RISK_GRAPH_SCORE_VIEW")) { %>
+                <a class="<%= "risk-graph-scores".equals(labActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/risk/graph-scores">图谱评分</a>
+                <a class="<%= "risk-graph-models".equals(labActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/risk/graph-models">模型治理</a>
+            <% } %>
+            <% if (labAdminUser != null && labAdminUser.hasPermission("RISK_GRAPH_CASE_VIEW")) { %>
+                <a class="<%= "risk-graph-cases".equals(labActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/risk/graph-cases">反馈样本</a>
+            <% } %>
+        </div>
+        <div class="admin-nav-group">
+            <span>仿真沙盘</span>
+            <% if (labAdminUser != null && labAdminUser.hasPermission("ADMIN_DASHBOARD_VIEW")) { %>
+                <a class="<%= "simulation".equals(labActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/simulation">实时仿真沙盘</a>
+            <% } %>
+        </div>
+        <div class="admin-nav-group">
+            <span>平台切换</span>
+            <a href="<%= request.getContextPath() %>/admin/dashboard">运营管理平台</a>
+            <a href="<%= request.getContextPath() %>/admin/platform">返回平台选择</a>
+        </div>
+    </nav>
+</aside>

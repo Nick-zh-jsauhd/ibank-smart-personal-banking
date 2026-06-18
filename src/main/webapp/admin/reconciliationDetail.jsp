@@ -32,6 +32,19 @@
         return checkType == null ? "" : checkType;
     }
 
+    private String businessTypeName(String businessType) {
+        if ("DEPOSIT".equals(businessType)) return "存款";
+        if ("WITHDRAW".equals(businessType)) return "取款";
+        if ("TRANSFER_INNER".equals(businessType)) return "本行转账";
+        if ("PAYMENT".equals(businessType)) return "生活缴费";
+        if ("BUY_WEALTH".equals(businessType)) return "理财申购";
+        if ("REDEEM_WEALTH".equals(businessType)) return "理财赎回";
+        if ("ACCOUNT".equals(businessType)) return "账户";
+        if ("VERIFY".equals(businessType)) return "系统核验";
+        if ("RISK".equals(businessType)) return "风控";
+        return checkTypeName(businessType);
+    }
+
     private String severityName(String severity) {
         if ("CRITICAL".equals(severity)) return "严重";
         if ("WARN".equals(severity)) return "警告";
@@ -61,7 +74,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Reconciliation Detail</p>
+        <p class="eyebrow">对账详情</p>
         <h1>对账详情</h1>
         <p class="muted">查看某次对账批次的执行结果和异常明细。</p>
     </section>
@@ -151,7 +164,7 @@
                     <tr>
                         <td><%= HtmlUtil.escape(checkTypeName(item.getCheckType())) %></td>
                         <td><span class="<%= statusClass(item.getSeverity()) %>"><%= severityName(item.getSeverity()) %></span></td>
-                        <td><%= HtmlUtil.escape(item.getBusinessType()) %></td>
+                        <td><%= HtmlUtil.escape(businessTypeName(item.getBusinessType())) %></td>
                         <td><strong><%= HtmlUtil.escape(item.getBusinessId()) %></strong></td>
                         <td><%= HtmlUtil.escape(item.getExpectedValue()) %></td>
                         <td><%= HtmlUtil.escape(item.getActualValue()) %></td>

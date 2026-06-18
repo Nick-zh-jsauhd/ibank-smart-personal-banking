@@ -45,7 +45,10 @@ public class PermissionServiceImpl implements PermissionService {
         if ("/admin/login".equals(path) || "/admin/logout".equals(path) || "/admin/forbidden.jsp".equals(path)) {
             return null;
         }
-        if ("/admin/dashboard".equals(path)) {
+        if ("/admin/platform".equals(path) || "/admin/dashboard".equals(path) || "/admin/lab".equals(path)) {
+            return "ADMIN_DASHBOARD_VIEW";
+        }
+        if ("/admin/simulation".equals(path) || "/admin/simulation/runtime".equals(path)) {
             return "ADMIN_DASHBOARD_VIEW";
         }
         if ("/admin/customers".equals(path) || "/admin/customer/detail".equals(path)) {

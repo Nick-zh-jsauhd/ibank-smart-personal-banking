@@ -30,6 +30,19 @@
         return checkType == null ? "" : checkType;
     }
 
+    private String businessTypeName(String businessType) {
+        if ("DEPOSIT".equals(businessType)) return "存款";
+        if ("WITHDRAW".equals(businessType)) return "取款";
+        if ("TRANSFER_INNER".equals(businessType)) return "本行转账";
+        if ("PAYMENT".equals(businessType)) return "生活缴费";
+        if ("BUY_WEALTH".equals(businessType)) return "理财申购";
+        if ("REDEEM_WEALTH".equals(businessType)) return "理财赎回";
+        if ("ACCOUNT".equals(businessType)) return "账户";
+        if ("VERIFY".equals(businessType)) return "系统核验";
+        if ("RISK".equals(businessType)) return "风控";
+        return checkTypeName(businessType);
+    }
+
     private String severityName(String severity) {
         if ("CRITICAL".equals(severity)) return "严重";
         if ("WARN".equals(severity)) return "警告";
@@ -64,7 +77,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Exception Handling</p>
+        <p class="eyebrow">异常处理</p>
         <h1>对账异常详情</h1>
         <p class="muted">记录异常核实过程和处理结论，为后续调账申请或复核流程保留依据。</p>
     </section>
@@ -99,7 +112,7 @@
             <dl class="detail-list">
                 <div><dt>对账日期</dt><dd><%= item.getReconDate() == null ? "" : item.getReconDate().toString() %></dd></div>
                 <div><dt>检查类型</dt><dd><%= HtmlUtil.escape(checkTypeName(item.getCheckType())) %></dd></div>
-                <div><dt>业务类型</dt><dd><%= HtmlUtil.escape(item.getBusinessType()) %></dd></div>
+                <div><dt>业务类型</dt><dd><%= HtmlUtil.escape(businessTypeName(item.getBusinessType())) %></dd></div>
                 <div><dt>业务标识</dt><dd><strong><%= HtmlUtil.escape(item.getBusinessId()) %></strong></dd></div>
                 <div><dt>期望值</dt><dd><%= HtmlUtil.escape(item.getExpectedValue()) %></dd></div>
                 <div><dt>实际值</dt><dd><%= HtmlUtil.escape(item.getActualValue()) %></dd></div>

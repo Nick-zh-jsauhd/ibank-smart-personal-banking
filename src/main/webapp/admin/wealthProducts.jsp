@@ -34,7 +34,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Wealth Products</p>
+        <p class="eyebrow">理财产品</p>
         <h1>理财产品管理</h1>
         <p class="muted">维护理财产品名称、风险等级、收益率、期限、购买金额范围和上下架状态。</p>
     </section>
@@ -52,8 +52,8 @@
                 <span>产品状态</span>
                 <select name="status">
                     <option value="">全部</option>
-                    <option value="ON_SALE" <%= "ON_SALE".equals(selectedStatus) ? "selected" : "" %>>ON_SALE</option>
-                    <option value="OFF_SALE" <%= "OFF_SALE".equals(selectedStatus) ? "selected" : "" %>>OFF_SALE</option>
+                    <option value="ON_SALE" <%= "ON_SALE".equals(selectedStatus) ? "selected" : "" %>>在售</option>
+                    <option value="OFF_SALE" <%= "OFF_SALE".equals(selectedStatus) ? "selected" : "" %>>已下架</option>
                 </select>
             </label>
             <button class="button primary" type="submit">查询</button>
@@ -64,7 +64,7 @@
         <div class="section-title">
             <div>
                 <h2>产品参数</h2>
-                <p class="section-note">ON_SALE 会出现在客户侧理财列表并允许申购；OFF_SALE 会隐藏并拒绝新的申购。</p>
+                <p class="section-note">在售产品会出现在客户侧理财列表并允许申购；下架产品会隐藏并拒绝新的申购。</p>
             </div>
         </div>
         <div class="table-wrap">
@@ -86,7 +86,7 @@
                 </thead>
                 <tbody>
                 <% if (products == null || products.isEmpty()) { %>
-                    <tr><td colspan="11" class="empty">暂无理财产品</td></tr>
+                    <tr><td colspan="11" class="empty">还没有理财产品，新增产品后会显示在这里。</td></tr>
                 <% } else {
                     for (WealthProduct product : products) {
                         String formId = "wealthProductForm" + product.getProductId();
@@ -116,8 +116,8 @@
                         <td><input form="<%= formId %>" class="admin-money-input" name="maxAmount" value="<%= moneyText(product.getMaxAmount()) %>"></td>
                         <td>
                             <select form="<%= formId %>" class="admin-status-select" name="status">
-                                <option value="ON_SALE" <%= onSale ? "selected" : "" %>>ON_SALE</option>
-                                <option value="OFF_SALE" <%= onSale ? "" : "selected" %>>OFF_SALE</option>
+                                <option value="ON_SALE" <%= onSale ? "selected" : "" %>>在售</option>
+                                <option value="OFF_SALE" <%= onSale ? "" : "selected" %>>已下架</option>
                             </select>
                         </td>
                         <td><input form="<%= formId %>" class="admin-description-input" name="description" value="<%= HtmlUtil.escape(product.getDescription()) %>"></td>
@@ -126,7 +126,7 @@
                             <% if (adminUser.hasPermission("WEALTH_PRODUCT_UPDATE")) { %>
                             <button form="<%= formId %>" class="button primary compact" type="submit">保存</button>
                             <% } %>
-                            <span class="direction <%= onSale ? "direction-in" : "direction-out" %>"><%= HtmlUtil.escape(product.getStatus()) %></span>
+                            <span class="direction <%= onSale ? "direction-in" : "direction-out" %>"><%= onSale ? "在售" : "已下架" %></span>
                         </td>
                     </tr>
                 <%  }

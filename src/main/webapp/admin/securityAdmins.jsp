@@ -52,7 +52,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Admin Users</p>
+        <p class="eyebrow">管理员账号</p>
         <h1>管理员账号</h1>
         <p class="muted">维护后台人员账号、启停状态和角色分配。</p>
     </section>
@@ -115,7 +115,10 @@
                             <label class="checkbox-line">
                                 <input type="checkbox" name="roleCode" value="<%= HtmlUtil.escape(role.getRoleCode()) %>"
                                     <%= selectedRole(role.getRoleCode(), formRoleCodes) ? "checked" : "" %>>
-                                <span><strong><%= HtmlUtil.escape(role.getRoleName()) %></strong><br><%= HtmlUtil.escape(role.getRoleCode()) %></span>
+                                <span>
+                                    <strong><%= HtmlUtil.escape(role.getRoleName()) %></strong><br>
+                                    <em><%= HtmlUtil.escape(role.getDescription()) %></em>
+                                </span>
                             </label>
                         <%  }
                         } %>

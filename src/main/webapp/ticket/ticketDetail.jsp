@@ -45,7 +45,7 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Ticket Detail</p>
+            <p class="eyebrow">工单详情</p>
             <h1>工单详情</h1>
             <p class="muted">查看处理进展，并按后台要求补充资料或确认关闭。</p>
         </div>

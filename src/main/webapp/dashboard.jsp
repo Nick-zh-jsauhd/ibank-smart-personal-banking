@@ -73,6 +73,14 @@
     SessionUser loginUser = (SessionUser) session.getAttribute("loginUser");
     String displayName = loginUser != null && loginUser.getFullName() != null && loginUser.getFullName().trim().length() > 0 ? loginUser.getFullName().trim() : "客户";
     String error = (String) request.getAttribute("error");
+    BigDecimal monthlyNetIncome = insight.getMonthlyNetIncome() == null ? BigDecimal.ZERO : insight.getMonthlyNetIncome();
+    String cashflowTone = monthlyNetIncome.compareTo(BigDecimal.ZERO) < 0 ? "outflow" : (monthlyNetIncome.compareTo(BigDecimal.ZERO) > 0 ? "inflow" : "balanced");
+    String cashflowTitle = monthlyNetIncome.compareTo(BigDecimal.ZERO) < 0 ? "本月支出高于收入" : (monthlyNetIncome.compareTo(BigDecimal.ZERO) > 0 ? "本月收入覆盖支出" : "本月收支暂时持平");
+    String cashflowNote = monthlyNetIncome.compareTo(BigDecimal.ZERO) < 0
+            ? "建议优先核对最大支出和近期资金动向，确认是否存在异常或可延后支出。"
+            : (monthlyNetIncome.compareTo(BigDecimal.ZERO) > 0
+            ? "当前现金流为正，可以继续关注未读通知、理财匹配和服务进度。"
+            : "完成转账、缴费或理财交易后，这里会自动更新现金流方向。");
     request.setAttribute("activeNav", "dashboard");
 %>
 <!DOCTYPE html>
@@ -97,7 +105,7 @@
         <article class="insight-main-card warm-dashboard">
             <div>
                 <p class="human-greeting"><%= greetingText() %>，<%= HtmlUtil.escape(displayName) %></p>
-                <p class="eyebrow">iBank Warm Finance</p>
+                <p class="eyebrow">个人金融工作台</p>
                 <h1>今天先看账户、账单和安全提醒。</h1>
                 <p class="muted">我们把资产、现金流、服务待办和异常交易放在一起，帮你判断下一步最值得关注的事。</p>
                 <span class="balance-figure">¥ <%= moneyText(view.getTotalAvailableBalance()) %></span>
@@ -135,7 +143,11 @@
                 <div class="risk-meter-track"><div class="risk-meter-fill" style="width: <%= "C1".equals(view.getCustomerRiskLevel()) ? 28 : ("C2".equals(view.getCustomerRiskLevel()) ? 52 : ("C3".equals(view.getCustomerRiskLevel()) ? 72 : 92)) %>%"></div></div>
                 <p class="section-note">风险等级会影响理财申购和资金流出限额，异常事件会进入通知与工单闭环。</p>
             </div>
-            <div class="quick-link-grid">
+            <div class="dashboard-action-header">
+                <span>常用处理</span>
+                <small>根据当前账户状态选择下一步</small>
+            </div>
+            <div class="quick-link-grid dashboard-action-grid">
                 <a class="quick-link" href="<%= request.getContextPath() %>/deposit"><strong>存款</strong><span>模拟入账</span></a>
                 <a class="quick-link" href="<%= request.getContextPath() %>/payment"><strong>缴费</strong><span>生活账单</span></a>
                 <a class="quick-link" href="<%= request.getContextPath() %>/notifications"><strong>通知</strong><span><%= view.getUnreadNotificationCount() %> 条未读</span></a>
@@ -167,8 +179,8 @@
         </a>
     </section>
 
-    <section class="insight-grid">
-        <article class="cashflow-card">
+    <section class="insight-grid dashboard-mid-grid">
+        <article class="cashflow-card dashboard-cashflow-card">
             <div class="section-title">
                 <div>
                     <h2>本月现金流</h2>
@@ -176,12 +188,21 @@
                 </div>
                 <a class="button secondary compact" href="<%= request.getContextPath() %>/bill/report">查看收支报表</a>
             </div>
-            <div class="cashflow-summary">
+            <div class="cashflow-summary dashboard-cashflow-summary">
                 <div><span class="small-label">收入笔数</span><strong><%= insight.getIncomeCount() %></strong></div>
                 <div><span class="small-label">支出笔数</span><strong><%= insight.getExpenseCount() %></strong></div>
+                <div><span class="small-label">本月净额</span><strong>¥ <%= moneyText(monthlyNetIncome) %></strong></div>
                 <div><span class="small-label">最大支出</span><strong>¥ <%= insight.getLargestOutflow() == null ? "0.00" : moneyText(insight.getLargestOutflow().getAmount()) %></strong></div>
             </div>
-            <div class="cashflow-row">
+            <div class="dashboard-cashflow-brief <%= cashflowTone %>">
+                <div>
+                    <span>现金流解读</span>
+                    <strong><%= cashflowTitle %></strong>
+                    <p><%= cashflowNote %></p>
+                </div>
+                <a class="dashboard-cashflow-brief-link" href="<%= request.getContextPath() %>/transactions">核对流水</a>
+            </div>
+            <div class="cashflow-row dashboard-cashflow-bars">
                 <div class="bar-line">
                     <span>收入</span>
                     <div class="cashflow-track"><div class="cashflow-fill" style="width: <%= percent(insight.getMonthlyIncome(), insight.getMonthlyIncome().max(insight.getMonthlyExpense())) %>%"></div></div>
@@ -195,14 +216,14 @@
             </div>
         </article>
 
-        <article class="movement-card">
+        <article class="movement-card dashboard-reminder-card">
             <div class="section-title">
                 <div>
                     <h2>待办与提醒</h2>
                     <p class="section-note">服务、风控和通知统一汇聚，优先处理待补充和未读事项。</p>
                 </div>
             </div>
-            <div class="movement-list">
+            <div class="movement-list dashboard-reminder-list">
                 <a class="movement-item" href="<%= request.getContextPath() %>/tickets">
                     <div class="movement-item-main">
                         <strong>服务工单</strong>

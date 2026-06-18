@@ -67,7 +67,7 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Wealth Holdings</p>
+            <p class="eyebrow">理财持仓</p>
             <h1>我的理财持仓</h1>
             <p class="muted">集中查看持有本金、估算收益、可赎回金额和赎回入口。</p>
         </div>
@@ -124,7 +124,7 @@
             <div class="section-title">
                 <div>
                     <h2>持仓卡片</h2>
-                    <p class="section-note">赎回会生成 REDEEM_WEALTH 入账流水，并更新持仓状态。</p>
+                    <p class="section-note">赎回会生成理财赎回入账流水，并更新持仓状态。</p>
                 </div>
             </div>
             <div class="product-card-grid">

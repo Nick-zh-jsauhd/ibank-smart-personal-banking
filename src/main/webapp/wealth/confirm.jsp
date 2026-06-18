@@ -45,7 +45,7 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Wealth Confirmation</p>
+            <p class="eyebrow">申购确认</p>
             <h1>申购确认与风险揭示</h1>
             <p class="muted">确认产品风险、付款账户和申购金额，理财产品不同于存款，参考收益不代表实际收益。</p>
         </div>
@@ -145,7 +145,7 @@
                     <h2>提交后系统动作</h2>
                     <ul class="task-checklist">
                         <li>再次校验风险等级、金额范围、余额和支付密码。</li>
-                        <li>付款账户冻结申购金额，生成待确认 BUY_WEALTH 交易。</li>
+                        <li>付款账户冻结申购金额，生成待确认的理财申购交易。</li>
                         <li>后台清算确认后创建持仓，并生成正式出账流水。</li>
                         <li>确认前资金不会进入理财持仓，确认后可在“我的持仓”追踪。</li>
                     </ul>

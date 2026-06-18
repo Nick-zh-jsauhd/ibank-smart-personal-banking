@@ -62,7 +62,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Adjustment Requests</p>
+        <p class="eyebrow">调账申请</p>
         <h1>调账申请</h1>
         <p class="muted">查看调账申请、复核结论和执行状态。资金修正必须先申请、再复核、后执行。</p>
     </section>

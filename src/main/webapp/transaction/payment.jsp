@@ -33,9 +33,9 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Payment</p>
+            <p class="eyebrow">生活缴费</p>
             <h1>生活缴费</h1>
-            <p class="muted">扣减账户余额，并生成 PAYMENT 交易、出账流水和缴费业务记录。</p>
+            <p class="muted">扣减账户余额，并生成生活缴费交易、出账流水和缴费业务记录。</p>
         </div>
         <div class="section-actions">
             <a class="button secondary compact" href="<%= request.getContextPath() %>/payment-records">缴费记录</a>
@@ -49,7 +49,7 @@
 
     <section class="photo-band payment">
         <div>
-            <p class="eyebrow">Life Payment</p>
+            <p class="eyebrow">缴费说明</p>
             <h2>把生活账单放进月度现金流里一起看。</h2>
             <p class="section-note">缴费成功后会同步扣减余额、生成缴费记录，并在月账单中归入生活支出。</p>
         </div>

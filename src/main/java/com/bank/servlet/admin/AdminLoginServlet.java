@@ -23,7 +23,7 @@ public class AdminLoginServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("adminUser") != null) {
-            response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+            response.sendRedirect(request.getContextPath() + "/admin/platform");
             return;
         }
         request.getRequestDispatcher("/admin/login.jsp").forward(request, response);
@@ -42,7 +42,7 @@ public class AdminLoginServlet extends HttpServlet {
         );
         if (result.isSuccess()) {
             request.getSession(true).setAttribute("adminUser", result.getData());
-            response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+            response.sendRedirect(request.getContextPath() + "/admin/platform");
             return;
         }
         request.setAttribute("error", result.getMessage());

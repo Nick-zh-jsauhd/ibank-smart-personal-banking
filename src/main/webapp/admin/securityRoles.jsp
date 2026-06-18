@@ -70,7 +70,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Roles & Permissions</p>
+        <p class="eyebrow">角色权限</p>
         <h1>角色权限</h1>
         <p class="muted">查看后台角色与权限清单，确认岗位边界和可操作范围。</p>
     </section>
@@ -94,7 +94,7 @@
                 </div>
                 <div class="section-actions">
                     <span class="<%= statusClass(role.getStatus()) %>"><%= statusName(role.getStatus()) %></span>
-                    <span class="tag"><%= HtmlUtil.escape(role.getRoleCode()) %></span>
+                    <span class="tag">系统角色</span>
                 </div>
             </div>
             <div class="admin-role-brief">

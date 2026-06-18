@@ -30,7 +30,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Admin User Detail</p>
+        <p class="eyebrow">管理员详情</p>
         <h1>管理员详情</h1>
         <p class="muted">查看账号状态、登录信息并维护后台角色。</p>
     </section>
@@ -99,7 +99,7 @@
                                     <input type="checkbox" name="roleCode" value="<%= HtmlUtil.escape(role.getRoleCode()) %>"
                                         <%= target.hasRole(role.getRoleCode()) ? "checked" : "" %>
                                         <%= "ACTIVE".equals(role.getStatus()) ? "" : "disabled" %>>
-                                    <span><strong><%= HtmlUtil.escape(role.getRoleName()) %></strong><br><%= HtmlUtil.escape(role.getRoleCode()) %></span>
+                                    <span><strong><%= HtmlUtil.escape(role.getRoleName()) %></strong><br><%= HtmlUtil.escape(role.getDescription()) %></span>
                                 </label>
                             <% } %>
                         </div>

@@ -38,7 +38,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Audit Center</p>
+        <p class="eyebrow">审计中心</p>
         <h1>审计中心</h1>
         <p class="muted">集中查看后台高风险操作、越权访问和登录安全事件。</p>
     </section>

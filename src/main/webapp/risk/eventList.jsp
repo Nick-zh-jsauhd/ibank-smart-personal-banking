@@ -53,7 +53,7 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Risk Control</p>
+            <p class="eyebrow">风险提醒</p>
             <h1>风险事件</h1>
             <p class="muted">资金流出交易命中风控时，会保留命中规则、原因和处理轨迹。</p>
         </div>
@@ -66,7 +66,7 @@
 
     <section class="photo-band risk">
         <div>
-            <p class="eyebrow">Transaction Check</p>
+            <p class="eyebrow">交易核验</p>
             <h2>异常交易先说明原因，再给出确认或申诉入口。</h2>
             <p class="section-note">预警通过代表交易已完成但建议关注；拦截代表交易未执行，可查看命中规则后发起风控申诉。</p>
         </div>

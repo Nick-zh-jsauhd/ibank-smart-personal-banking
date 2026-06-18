@@ -31,7 +31,7 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Transfer</p>
+            <p class="eyebrow">账户转账</p>
             <h1>本行转账</h1>
             <p class="muted">同一事务完成付款扣款、收款入账和双方流水落账。</p>
         </div>

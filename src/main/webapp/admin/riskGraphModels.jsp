@@ -120,12 +120,12 @@
     <title>GNN模型对比 - iBank</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/main.css">
 </head>
-<body class="admin-page">
-<%@ include file="/WEB-INF/jsp/adminTopbar.jspf" %>
+<body class="admin-page lab-page">
+<%@ include file="/WEB-INF/jsp/adminLabTopbar.jspf" %>
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">RiskBrain Model Strategy</p>
+        <p class="eyebrow">模型策略</p>
         <h1>GNN模型对比与阈值策略</h1>
         <p class="muted">把不同版本的回灌评分放在同一张业务视图里，观察拦截量、复核量、真实标签命中和审核容量，避免只看单次 AUC 指标就上线模型。</p>
     </section>
@@ -140,7 +140,7 @@
     <section class="content-section admin-decision-strip">
         <div class="section-title-row">
             <div>
-                <p class="eyebrow">Release Review</p>
+                <p class="eyebrow">发布复核</p>
                 <h2>上线前先回答三个业务问题</h2>
                 <p class="muted">模型治理页的核心不是“哪个指标更漂亮”，而是确认新模型会不会带来过多打扰、漏检或人工容量压力。</p>
             </div>
@@ -155,12 +155,12 @@
             <article class="admin-decision-card warning">
                 <span>人工容量</span>
                 <strong><%= candidateMetric == null ? 0 : candidateMetric.getFlaggedCount() %> 笔</strong>
-                <p>这是 REVIEW 与 BLOCK 合计进入人工视野的规模，必须和风控团队每日处理能力匹配。</p>
+                <p>这是人工复核与建议阻断合计进入人工视野的规模，必须和风控团队每日处理能力匹配。</p>
             </article>
             <article class="admin-decision-card danger">
                 <span>强干预队列</span>
                 <strong><%= candidateMetric == null ? 0 : candidateMetric.getBlockCount() %> 笔</strong>
-                <p>BLOCK 队列命中率 <%= candidateMetric == null ? "0.00%" : rate(candidateMetric.getBlockFraudCount(), candidateMetric.getBlockCount()) %>，仍需结合规则和复核结论。</p>
+                <p>建议阻断队列命中率 <%= candidateMetric == null ? "0.00%" : rate(candidateMetric.getBlockFraudCount(), candidateMetric.getBlockCount()) %>，仍需结合规则和复核结论。</p>
             </article>
             <article class="admin-decision-card">
                 <span>上线建议</span>
@@ -206,7 +206,7 @@
     <section class="content-section">
         <div class="section-title-row">
             <div>
-                <p class="eyebrow">Model Operations</p>
+                <p class="eyebrow">模型运营</p>
                 <h2>模型运营状态</h2>
                 <p class="muted">把训练结果转成系统可使用的运营资产：只有“运营模型”会默认进入评分看板和复核队列，候选与实验模型只用于对比和回测。</p>
             </div>
@@ -323,21 +323,21 @@
         <article class="metric-card warning">
             <span>候选复核容量</span>
             <strong><%= candidateMetric == null ? 0 : candidateMetric.getFlaggedCount() %></strong>
-            <small>REVIEW + BLOCK，命中率 <%= candidateMetric == null ? "0.00%" : rate(candidateMetric.getFlaggedFraudCount(), candidateMetric.getFlaggedCount()) %></small>
+            <small>人工复核 + 建议阻断，命中率 <%= candidateMetric == null ? "0.00%" : rate(candidateMetric.getFlaggedFraudCount(), candidateMetric.getFlaggedCount()) %></small>
         </article>
         <article class="metric-card danger">
             <span>候选强拦截</span>
             <strong><%= candidateMetric == null ? 0 : candidateMetric.getBlockCount() %></strong>
-            <small>BLOCK 标签命中率 <%= candidateMetric == null ? "0.00%" : rate(candidateMetric.getBlockFraudCount(), candidateMetric.getBlockCount()) %></small>
+            <small>建议阻断标签命中率 <%= candidateMetric == null ? "0.00%" : rate(candidateMetric.getBlockFraudCount(), candidateMetric.getBlockCount()) %></small>
         </article>
     </section>
 
     <section class="content-section">
         <div class="section-title-row">
             <div>
-                <p class="eyebrow">Threshold Lab</p>
+                <p class="eyebrow">阈值实验</p>
                 <h2>候选模型阈值实验台</h2>
-                <p class="muted">输入业务团队一天能处理的 REVIEW 与 BLOCK 容量，系统会按候选模型风险分从高到低截断，反推出最低入队分，并估算命中率、召回率和正常交易打扰量。</p>
+                <p class="muted">输入业务团队一天能处理的人工复核与建议阻断容量，系统会按候选模型风险分从高到低截断，反推出最低入队分，并估算命中率、召回率和正常交易打扰量。</p>
             </div>
             <span class="tag severity-info">候选版本 <%= HtmlUtil.escape(candidateModelVersion) %></span>
         </div>
@@ -354,24 +354,24 @@
         %>
             <section class="metric-grid">
                 <article class="metric-card warning">
-                    <span>REVIEW 推荐入队分</span>
+                    <span>人工复核推荐入队分</span>
                     <strong><%= reviewPlanMetric.getThresholdScore() %></strong>
                     <small>Top <%= thresholdPlan.getReviewCapacity() %>，Precision <%= rate(reviewPlanMetric.getTruePositiveCount(), reviewPlanMetric.getSelectedCount()) %></small>
                 </article>
                 <article class="metric-card danger">
-                    <span>BLOCK 推荐入队分</span>
+                    <span>建议阻断推荐入队分</span>
                     <strong><%= blockPlanMetric.getThresholdScore() %></strong>
                     <small>Top <%= thresholdPlan.getBlockCapacity() %>，Precision <%= rate(blockPlanMetric.getTruePositiveCount(), blockPlanMetric.getSelectedCount()) %></small>
                 </article>
                 <article class="metric-card">
                     <span>人工复核净队列</span>
                     <strong><%= thresholdPlan.getReviewOnlySelectedCount() %></strong>
-                    <small>排除 BLOCK 后仍需人工判断的交易量</small>
+                    <small>排除建议阻断后仍需人工判断的交易量</small>
                 </article>
                 <article class="metric-card">
                     <span>预计总召回</span>
                     <strong><%= rate(reviewPlanMetric.getTruePositiveCount(), reviewPlanMetric.getTotalPositiveCount()) %></strong>
-                    <small>在目标 REVIEW 容量内找回真实正样本的比例</small>
+                    <small>在目标人工复核容量内找回真实正样本的比例</small>
                 </article>
             </section>
             <div class="table-wrap">
@@ -391,7 +391,7 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td><span class="tag severity-danger">BLOCK</span></td>
+                        <td><span class="tag severity-danger">建议阻断</span></td>
                         <td><%= blockPlanMetric.getSelectedCount() %></td>
                         <td><%= blockPlanMetric.getThresholdScore() %></td>
                         <td><%= blockPlanMetric.getTruePositiveCount() %></td>
@@ -399,21 +399,21 @@
                         <td><%= rate(blockPlanMetric.getTruePositiveCount(), blockPlanMetric.getSelectedCount()) %></td>
                         <td><%= rate(blockPlanMetric.getTruePositiveCount(), blockPlanMetric.getTotalPositiveCount()) %></td>
                         <td><small class="table-note">只建议作为最强干预队列，仍需要结合限额规则、标签冲突和人工复核确认。</small></td>
-                        <td><a class="button secondary compact" href="<%= blockQueueUrl %>">查看 BLOCK 候选</a></td>
+                        <td><a class="button secondary compact" href="<%= blockQueueUrl %>">查看阻断候选</a></td>
                     </tr>
                     <tr>
-                        <td><span class="tag severity-warning">REVIEW</span></td>
+                        <td><span class="tag severity-warning">人工复核</span></td>
                         <td><%= reviewPlanMetric.getSelectedCount() %></td>
                         <td><%= reviewPlanMetric.getThresholdScore() %></td>
                         <td><%= reviewPlanMetric.getTruePositiveCount() %></td>
                         <td><%= reviewPlanMetric.getFalsePositiveCount() %></td>
                         <td><%= rate(reviewPlanMetric.getTruePositiveCount(), reviewPlanMetric.getSelectedCount()) %></td>
                         <td><%= rate(reviewPlanMetric.getTruePositiveCount(), reviewPlanMetric.getTotalPositiveCount()) %></td>
-                        <td><small class="table-note">这是完整人工复核队列，包含 BLOCK 高危子集；适合用于日常运营容量排班。</small></td>
-                        <td><a class="button secondary compact" href="<%= reviewQueueUrl %>">查看 REVIEW 候选</a></td>
+                        <td><small class="table-note">这是完整人工复核队列，包含建议阻断高危子集；适合用于日常运营容量排班。</small></td>
+                        <td><a class="button secondary compact" href="<%= reviewQueueUrl %>">查看复核候选</a></td>
                     </tr>
                     <tr>
-                        <td><span class="tag severity-info">REVIEW ONLY</span></td>
+                        <td><span class="tag severity-info">仅人工复核</span></td>
                         <td><%= thresholdPlan.getReviewOnlySelectedCount() %></td>
                         <td><%= reviewPlanMetric.getThresholdScore() %> - <%= blockPlanMetric.getThresholdScore() %></td>
                         <td><%= thresholdPlan.getReviewOnlyTruePositiveCount() %></td>
@@ -432,7 +432,7 @@
     <section class="content-section">
         <div class="section-title-row">
             <div>
-                <p class="eyebrow">Version Comparison</p>
+                <p class="eyebrow">版本对比</p>
                 <h2>模型版本业务指标</h2>
                 <p class="muted">这里展示的是评分回灌后的业务指标，不等同于训练集 AUC/AP。它回答的是：这个版本会让多少交易进入人工队列，能找回多少真实正样本，会造成多少正常交易被打扰。</p>
             </div>
@@ -448,12 +448,12 @@
                     <th>特征版本</th>
                     <th>总评分</th>
                     <th>真实正样本</th>
-                    <th>PASS</th>
-                    <th>REVIEW</th>
-                    <th>BLOCK</th>
+                    <th>正常放行</th>
+                    <th>人工复核</th>
+                    <th>建议阻断</th>
                     <th>复核/拦截命中率</th>
                     <th>复核/拦截召回率</th>
-                    <th>BLOCK命中率</th>
+                    <th>阻断命中率</th>
                     <th>平均分</th>
                     <th>阈值</th>
                 </tr>
@@ -484,8 +484,8 @@
                         <td><%= rate(metric.getBlockFraudCount(), metric.getBlockCount()) %></td>
                         <td><%= decimalText(metric.getAverageScore(), 0) %></td>
                         <td>
-                            <small class="table-note">REVIEW <%= probabilityText(metric.getReviewThreshold()) %></small>
-                            <small class="table-note">BLOCK <%= probabilityText(metric.getBlockThreshold()) %></small>
+                            <small class="table-note">复核阈值 <%= probabilityText(metric.getReviewThreshold()) %></small>
+                            <small class="table-note">阻断阈值 <%= probabilityText(metric.getBlockThreshold()) %></small>
                         </td>
                     </tr>
                 <%  }
@@ -498,7 +498,7 @@
     <section class="content-section">
         <div class="section-title-row">
             <div>
-                <p class="eyebrow">Review Capacity</p>
+                <p class="eyebrow">复核容量</p>
                 <h2>Top-K 审核容量分析</h2>
                 <p class="muted">风控不是分数越高越好，还要看团队每天能处理多少笔。Top-K 分析用于回答“如果今天只看前 500/1000/5000 笔，命中率和召回率分别是多少”。</p>
             </div>
@@ -555,16 +555,16 @@
     <section class="content-section">
         <div class="section-title-row">
             <div>
-                <p class="eyebrow">Model Governance</p>
+                <p class="eyebrow">模型治理</p>
                 <h2>上线判断建议</h2>
             </div>
             <span class="tag severity-info">当前为离线批量评分模式</span>
         </div>
         <div class="admin-insight-grid">
             <div class="admin-insight-card">
-                <span>不能只看 BLOCK</span>
+                <span>不能只看建议阻断</span>
                 <strong>看整体队列</strong>
-                <p>BLOCK 是强动作，REVIEW 是运营容量。候选模型如果大幅减少 BLOCK，需要确认正样本是否被转移到了 REVIEW，而不是直接漏过。</p>
+                <p>建议阻断是强动作，人工复核是运营容量。候选模型如果大幅减少建议阻断，需要确认正样本是否被转移到了人工复核，而不是直接漏过。</p>
             </div>
             <div class="admin-insight-card">
                 <span>不能只看准确率</span>
@@ -574,7 +574,7 @@
             <div class="admin-insight-card">
                 <span>不能忽视漏检</span>
                 <strong>看召回</strong>
-                <p>PASS 中的真实正样本代表模型没有拦住的风险。后续应把人工反馈补回训练集，继续优化 GNN 特征和损失函数。</p>
+                <p>正常放行中的真实正样本代表模型没有拦住的风险。后续应把人工反馈补回训练集，继续优化 GNN 特征和损失函数。</p>
             </div>
             <div class="admin-insight-card decision-layer-card">
                 <span>推荐下一步</span>

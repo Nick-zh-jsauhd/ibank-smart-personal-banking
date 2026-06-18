@@ -55,7 +55,7 @@
         </section>
 
         <div class="access-copy" aria-label="运营后台说明">
-            <p class="access-kicker">Operations control access</p>
+            <p class="access-kicker">运营后台登录</p>
             <h1>进入后台前，确认职责边界。</h1>
             <p>风险复核、理财清算、调账审批、工单处理和审计追踪在这里分工协作。系统记录每一次授权动作和处理结果。</p>
             <div class="access-path" aria-label="后台处理路径">

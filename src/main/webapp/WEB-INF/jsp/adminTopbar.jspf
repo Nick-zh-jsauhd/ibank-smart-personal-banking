@@ -1,4 +1,4 @@
-<%@ page pageEncoding="UTF-8" import="com.bank.dto.AdminSessionUser,com.bank.util.HtmlUtil" %>
+<%@ page pageEncoding="UTF-8" import="com.bank.dto.AdminSessionUser,com.bank.util.AdminRoleDisplayUtil,com.bank.util.HtmlUtil" %>
 <%
     AdminSessionUser navAdminUser = (AdminSessionUser) session.getAttribute("adminUser");
     String adminActive = (String) request.getAttribute("activeNav");
@@ -6,12 +6,6 @@
     if (adminActive == null) {
         if (adminPath != null && adminPath.contains("/admin/customer")) {
             adminActive = "customers";
-        } else if (adminPath != null && adminPath.contains("/admin/risk/graph-models")) {
-            adminActive = "risk-graph-models";
-        } else if (adminPath != null && adminPath.contains("/admin/risk/graph-case")) {
-            adminActive = "risk-graph-cases";
-        } else if (adminPath != null && adminPath.contains("/admin/risk/graph-scores")) {
-            adminActive = "risk-graph-scores";
         } else if (adminPath != null && adminPath.contains("/admin/risk/rules")) {
             adminActive = "risk-rules";
         } else if (adminPath != null && adminPath.contains("/admin/risk/")) {
@@ -42,14 +36,16 @@
 <header class="admin-command-bar">
     <a class="brand admin-brand" href="<%= request.getContextPath() %>/admin/dashboard">
         <span class="admin-brand-mark">iB</span>
-        <span>iBank Control</span>
+        <span>iBank 运营控制</span>
     </a>
     <div class="admin-command-search">
         <span>运营控制台</span>
         <strong><%= navAdminUser == null ? "" : HtmlUtil.escape(navAdminUser.getUsername()) %></strong>
+        <a class="admin-platform-switch" href="<%= request.getContextPath() %>/admin/platform">平台选择</a>
+        <a class="admin-platform-switch lab-link" href="<%= request.getContextPath() %>/admin/lab">智能实验室</a>
     </div>
     <div class="user-zone admin-user-zone">
-        <span><%= navAdminUser == null ? "" : HtmlUtil.escape(navAdminUser.getRoleCodes().toString()) %></span>
+        <span><%= navAdminUser == null ? "" : HtmlUtil.escape(AdminRoleDisplayUtil.roleSummary(navAdminUser.getRoleCodes())) %></span>
         <a href="<%= request.getContextPath() %>/admin/logout">退出</a>
     </div>
 </header>
@@ -57,13 +53,13 @@
 <aside class="admin-sidebar">
     <nav class="admin-side-nav">
         <div class="admin-nav-group">
-            <span>Overview</span>
+            <span>总览</span>
             <% if (navAdminUser != null && navAdminUser.hasPermission("ADMIN_DASHBOARD_VIEW")) { %>
                 <a class="<%= "dashboard".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/dashboard">首页总览</a>
             <% } %>
         </div>
         <div class="admin-nav-group">
-            <span>Operations</span>
+            <span>运营处理</span>
             <% if (navAdminUser != null && navAdminUser.hasPermission("ADMIN_ALERT_VIEW")) { %>
                 <a class="<%= "messages".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/messages">消息待办</a>
             <% } %>
@@ -75,16 +71,9 @@
             <% } %>
         </div>
         <div class="admin-nav-group">
-            <span>Risk & Products</span>
+            <span>风控与产品</span>
             <% if (navAdminUser != null && navAdminUser.hasPermission("RISK_EVENT_VIEW")) { %>
                 <a class="<%= "risk-events".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/risk/events">风控事件</a>
-            <% } %>
-            <% if (navAdminUser != null && navAdminUser.hasPermission("RISK_GRAPH_SCORE_VIEW")) { %>
-                <a class="<%= "risk-graph-scores".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/risk/graph-scores">GNN评分</a>
-                <a class="<%= "risk-graph-models".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/risk/graph-models">GNN模型</a>
-            <% } %>
-            <% if (navAdminUser != null && navAdminUser.hasPermission("RISK_GRAPH_CASE_VIEW")) { %>
-                <a class="<%= "risk-graph-cases".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/risk/graph-cases">GNN复核</a>
             <% } %>
             <% if (navAdminUser != null && navAdminUser.hasPermission("RISK_RULE_VIEW")) { %>
                 <a class="<%= "risk-rules".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/risk/rules">风控规则</a>
@@ -97,7 +86,7 @@
             <% } %>
         </div>
         <div class="admin-nav-group">
-            <span>Finance Control</span>
+            <span>账务控制</span>
             <% if (navAdminUser != null && navAdminUser.hasPermission("RECONCILIATION_VIEW")) { %>
                 <a class="<%= "reconciliation".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/reconciliation">账务对账</a>
             <% } %>
@@ -106,7 +95,7 @@
             <% } %>
         </div>
         <div class="admin-nav-group">
-            <span>Governance</span>
+            <span>治理权限</span>
             <% if (navAdminUser != null && navAdminUser.hasPermission("ADMIN_AUDIT_VIEW")) { %>
                 <a class="<%= "audit".equals(adminActive) ? "active" : "" %>" href="<%= request.getContextPath() %>/admin/audit">审计中心</a>
             <% } %>

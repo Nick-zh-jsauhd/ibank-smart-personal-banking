@@ -18,6 +18,27 @@
         return txnType == null ? "" : txnType;
     }
 
+    private String notificationTypeName(String type) {
+        if ("TRANSACTION".equals(type)) return "交易提醒";
+        if ("RISK".equals(type)) return "风控提醒";
+        if ("WEALTH".equals(type)) return "理财提醒";
+        if ("SECURITY".equals(type)) return "安全提醒";
+        if ("SERVICE".equals(type)) return "服务工单";
+        if ("SYSTEM".equals(type)) return "系统通知";
+        return type == null ? "" : type;
+    }
+
+    private String businessText(String text) {
+        if (text == null) return "";
+        return text.replace("TRANSFER_INNER", "本行转账")
+                .replace("ACCOUNT_ADJUSTMENT", "账户调账")
+                .replace("REDEEM_WEALTH", "理财赎回")
+                .replace("BUY_WEALTH", "理财申购")
+                .replace("PAYMENT", "生活缴费")
+                .replace("WITHDRAW", "取款")
+                .replace("DEPOSIT", "存款");
+    }
+
     private String sourceName(String source) {
         if ("ASSESSMENT".equals(source)) return "风险测评";
         if ("ADMIN".equals(source)) return "管理员调整";
@@ -58,7 +79,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Customer Detail</p>
+        <p class="eyebrow">客户详情</p>
         <h1>客户详情</h1>
         <p class="muted">客户档案、账户、近期流水、风控事件和站内通知的聚合视图。</p>
     </section>
@@ -334,8 +355,8 @@
                     %>
                         <tr>
                             <td><%= notification.getCreatedAt() == null ? "" : notification.getCreatedAt().toString().substring(0, 19) %></td>
-                            <td><%= HtmlUtil.escape(notification.getNotificationType()) %></td>
-                            <td><%= HtmlUtil.escape(notification.getTitle()) %></td>
+                            <td><%= HtmlUtil.escape(notificationTypeName(notification.getNotificationType())) %></td>
+                            <td><%= HtmlUtil.escape(businessText(notification.getTitle())) %></td>
                             <td><span class="<%= notification.isReadFlag() ? "status" : "direction direction-out" %>"><%= notification.isReadFlag() ? "已读" : "未读" %></span></td>
                         </tr>
                     <%  }

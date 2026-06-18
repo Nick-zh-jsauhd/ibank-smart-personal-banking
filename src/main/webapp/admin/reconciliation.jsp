@@ -42,7 +42,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Accounting Reconciliation</p>
+        <p class="eyebrow">账务对账</p>
         <h1>账务对账</h1>
         <p class="muted">按日期检查交易、账户流水、理财持仓和风控拦截之间的一致性，辅助管理员做日终核算。</p>
     </section>

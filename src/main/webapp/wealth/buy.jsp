@@ -39,7 +39,7 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Wealth Order</p>
+            <p class="eyebrow">理财申购</p>
             <h1>理财申购</h1>
             <p class="muted">选择付款账户和申购金额，下一步进入风险确认与支付密码校验。</p>
         </div>

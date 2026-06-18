@@ -69,7 +69,7 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Service Center</p>
+            <p class="eyebrow">服务中心</p>
             <h1>服务中心</h1>
             <p class="muted">交易争议、风控申诉、账户或理财问题都在这里提交和跟进。</p>
         </div>
@@ -88,7 +88,7 @@
 
     <section class="photo-band service">
         <div>
-            <p class="eyebrow">Service Care</p>
+            <p class="eyebrow">服务跟进</p>
             <h2>问题提交后，会有人接手并留下每一步处理记录。</h2>
             <p class="section-note">交易争议、风控申诉和账户问题都会进入后台待办，处理结果会同步回通知中心。</p>
         </div>

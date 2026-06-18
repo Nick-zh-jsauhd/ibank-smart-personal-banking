@@ -45,7 +45,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Create Adjustment</p>
+        <p class="eyebrow">创建调账</p>
         <h1>创建调账申请</h1>
         <p class="muted">调账申请只记录意图，不会立即修改账户余额。资金变动必须经过复核和执行。</p>
     </section>

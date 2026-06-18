@@ -52,6 +52,13 @@
         return result == null ? "" : result;
     }
 
+    private String modelDecisionLabel(String decision) {
+        if ("BLOCK".equals(decision)) return "建议阻断";
+        if ("REVIEW".equals(decision)) return "人工复核";
+        if ("PASS".equals(decision)) return "正常放行";
+        return decision == null ? "" : decision;
+    }
+
     private String severityClass(String type) {
         if ("LABEL_CONFLICT".equals(type)) return "severity-conflict";
         if ("TRUE_POSITIVE_BLOCK".equals(type)) return "severity-danger";
@@ -91,12 +98,12 @@
     <title>GNN复核队列 - iBank Admin</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/main.css">
 </head>
-<body class="admin-page">
-<%@ include file="/WEB-INF/jsp/adminTopbar.jspf" %>
+<body class="admin-page lab-page">
+<%@ include file="/WEB-INF/jsp/adminLabTopbar.jspf" %>
 
 <main class="layout layout-wide">
     <section class="page-heading">
-        <p class="eyebrow">RiskBrain Feedback Loop</p>
+        <p class="eyebrow">模型反馈闭环</p>
         <h1>GNN复核队列</h1>
         <p class="muted">把模型高风险、标签冲突和重点调查样本从评分看板中沉淀出来，由风控人员给出人工结论，后续用于阈值校准和再训练。</p>
     </section>
@@ -134,7 +141,7 @@
     <section class="content-section">
         <div class="section-title-row">
             <div>
-                <p class="eyebrow">Feedback Operations</p>
+                <p class="eyebrow">反馈运营</p>
                 <h2>复核闭环操作</h2>
                 <p class="section-note">先从运营模型评分里同步候选样本，再由风控人员复核；已有样本只更新模型分数和原因，不覆盖人工结论。</p>
             </div>
@@ -163,7 +170,7 @@
     <section class="content-section">
         <div class="section-title-row">
             <div>
-                <p class="eyebrow">Feedback Quality</p>
+                <p class="eyebrow">反馈质量</p>
                 <h2>训练反馈质量</h2>
                 <p class="section-note">只有“确认风险”和“误报样本”会变成明确训练标签；“需补证据”和“忽略”会进入治理记录，但不会强行喂给模型。</p>
             </div>
@@ -241,7 +248,7 @@
     <section class="content-section">
         <div class="section-title-row">
             <div>
-                <p class="eyebrow">Review Queue</p>
+                <p class="eyebrow">复核队列</p>
                 <h2>复核样本列表</h2>
                 <p class="section-note">优先处理“标签冲突”：它代表模型和原始标签不一致，不能直接判定，只能进入人工解释与反馈闭环。</p>
             </div>
@@ -278,7 +285,7 @@
                         <td><strong><%= item.getPriority() %></strong></td>
                         <td><strong><%= item.getRiskScore() %></strong></td>
                         <td><%= probabilityText(item.getRiskProbability()) %></td>
-                        <td><%= HtmlUtil.escape(item.getModelDecision()) %></td>
+                        <td><%= HtmlUtil.escape(modelDecisionLabel(item.getModelDecision())) %></td>
                         <td><%= item.isLabelFraud() ? "洗钱" : "正常" %></td>
                         <td><%= HtmlUtil.escape(item.getCurrency()) %> <%= moneyText(item.getAmount()) %></td>
                         <td><%= HtmlUtil.escape(timeText(item.getEventTime())) %></td>

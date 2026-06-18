@@ -47,7 +47,7 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Payment Records</p>
+            <p class="eyebrow">缴费记录</p>
             <h1>缴费记录</h1>
             <p class="muted">展示生活缴费扩展业务详情；资金流水仍可在流水页统一查询。</p>
         </div>

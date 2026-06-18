@@ -33,7 +33,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Login Logs</p>
+        <p class="eyebrow">登录日志</p>
         <h1>登录日志</h1>
         <p class="muted">查看后台和客户侧登录行为、失败原因和来源 IP。</p>
     </section>

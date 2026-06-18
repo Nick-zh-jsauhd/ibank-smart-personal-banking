@@ -48,7 +48,7 @@
 <main class="layout layout-wide">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Wealth Settlement</p>
+            <p class="eyebrow">理财清算</p>
             <h1>理财清算中心</h1>
             <p class="muted">把客户申购、资金冻结、持仓确认、赎回申请和到账落账拆成可追踪的清算流程。</p>
         </div>
@@ -97,13 +97,13 @@
             <form method="post" action="<%= request.getContextPath() %>/admin/wealth/settlement" class="action-card">
                 <input type="hidden" name="action" value="confirmBuy">
                 <strong>确认申购</strong>
-                <span>把待确认申购单转为持仓，并生成 BUY_WEALTH 出账流水。</span>
+                <span>把待确认申购单转为持仓，并生成理财申购出账流水。</span>
                 <button class="button primary compact" type="submit">执行确认</button>
             </form>
             <form method="post" action="<%= request.getContextPath() %>/admin/wealth/settlement" class="action-card">
                 <input type="hidden" name="action" value="settleRedeem">
                 <strong>赎回到账</strong>
-                <span>把赎回待到账订单清算入账，并生成 REDEEM_WEALTH 入账流水。</span>
+                <span>把赎回待到账订单清算入账，并生成理财赎回入账流水。</span>
                 <button class="button primary compact" type="submit">执行到账</button>
             </form>
             <form method="post" action="<%= request.getContextPath() %>/admin/wealth/settlement" class="action-card">

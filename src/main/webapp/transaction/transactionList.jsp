@@ -66,15 +66,15 @@
 <head>
     <meta charset="UTF-8">
     <title>交易流水 - iBank</title>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/main.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/main.css?v=transaction-layout-20260615a">
 </head>
-<body class="customer-page">
+<body class="customer-page transaction-page">
 <%@ include file="/WEB-INF/jsp/customerTopbar.jspf" %>
 
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Transactions</p>
+            <p class="eyebrow">交易流水</p>
             <h1>交易流水</h1>
             <p class="muted">按账户、方向和业务类型查看最近 100 条资金动向。</p>
         </div>
@@ -88,15 +88,15 @@
         <div class="alert danger"><%= HtmlUtil.escape(error) %></div>
     <% } %>
 
-    <div class="care-note">
+    <div class="care-note transaction-care-note">
         <div>
             <strong>流水用于核对每一笔资金变化。</strong>
             <p>如果某笔交易看起来不符合预期，可以复制交易编号，从服务中心发起交易争议工单。</p>
         </div>
     </div>
 
-    <section class="insight-grid">
-        <article class="cashflow-card">
+    <section class="transaction-workbench">
+        <article class="cashflow-card transaction-cashflow-card">
             <div class="section-title">
                 <div>
                     <h2>筛选结果现金流</h2>
@@ -122,14 +122,14 @@
             </div>
         </article>
 
-        <aside class="content-section filter-section">
+        <aside class="content-section filter-section transaction-filter-card">
             <div class="section-title">
                 <div>
                     <h2>筛选交易</h2>
-                    <p class="section-note">Mercury 式筛选优先保留关键维度。</p>
+                    <p class="section-note">先缩小账户、方向和类型，再核对下方资金流动。</p>
                 </div>
             </div>
-            <form method="get" action="<%= request.getContextPath() %>/transactions" class="form">
+            <form method="get" action="<%= request.getContextPath() %>/transactions" class="form transaction-filter-form">
                 <label>
                     <span>账户</span>
                     <select name="accountId">
@@ -163,16 +163,19 @@
                         <option value="REDEEM_WEALTH" <%= "REDEEM_WEALTH".equals(selectedTxnType) ? "selected" : "" %>>理财赎回</option>
                     </select>
                 </label>
-                <button class="button primary full" type="submit">查询交易</button>
+                <div class="transaction-filter-actions">
+                    <button class="button primary" type="submit">查询交易</button>
+                    <a class="button secondary" href="<%= request.getContextPath() %>/transactions">重置</a>
+                </div>
             </form>
         </aside>
     </section>
 
-    <section class="dashboard-columns">
-        <article class="content-section">
+    <section class="transaction-analysis-grid">
+        <article class="content-section transaction-movement-card">
             <div class="section-title">
                 <div>
-                    <h2>Top Money Movements</h2>
+                    <h2>关键资金流动</h2>
                     <p class="section-note">优先展示最近资金动向，表格用于完整核对。</p>
                 </div>
             </div>
@@ -203,7 +206,7 @@
             </div>
         </article>
 
-        <aside class="content-section">
+        <aside class="content-section transaction-guide-card">
             <div class="section-title">
                 <div>
                     <h2>流水说明</h2>
@@ -215,6 +218,12 @@
                 <li>如发现异常扣款，可从服务中心发起交易争议工单。</li>
                 <li>月账单会按自然月聚合同一套流水数据。</li>
             </ul>
+            <div class="transaction-guide-actions">
+                <span>常用后续处理</span>
+                <a class="button secondary" href="<%= request.getContextPath() %>/bill/report">查看收支报表</a>
+                <a class="button secondary" href="<%= request.getContextPath() %>/ticket/create">发起服务工单</a>
+                <a class="button secondary" href="<%= request.getContextPath() %>/risk/events">查看风控事件</a>
+            </div>
         </aside>
     </section>
 

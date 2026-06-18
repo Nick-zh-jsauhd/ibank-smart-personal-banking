@@ -35,7 +35,7 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Risk Assessment</p>
+            <p class="eyebrow">风险测评</p>
             <h1>客户风险测评</h1>
             <p class="muted">完成投资者适当性问卷后，系统会更新风险承受能力等级，并用于理财产品购买校验。</p>
         </div>

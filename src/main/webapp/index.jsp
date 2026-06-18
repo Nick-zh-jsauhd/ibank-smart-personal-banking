@@ -46,7 +46,7 @@
         <div class="portal-bg" aria-hidden="true"></div>
         <div class="portal-slide-inner portal-hero-layout">
             <div class="portal-copy">
-                <p class="eyebrow">IBANK WARM FINANCE</p>
+                <p class="eyebrow">温暖金融工作台</p>
                 <h1>让个人金融一屏看清。</h1>
                 <p class="cover-lede">账户、流水、月账单、理财、风险提醒和服务进度在这里汇总。先看资金状态，再看今天需要处理什么。</p>
                 <div class="portal-hero-actions" aria-label="首页分屏入口">
@@ -91,20 +91,20 @@
         <div class="portal-bg" aria-hidden="true"></div>
         <div class="portal-slide-inner portal-entry-layout">
             <div class="portal-copy">
-                <p class="eyebrow">PERSONAL BANKING</p>
-                <h1>登录后先看账户，再看账单和安全提醒。</h1>
-                <p class="cover-lede">客户侧以“今天该关注什么”为主线，把资产总览、生活缴费、理财适当性、未读通知和服务工单放到同一个金融工作台。</p>
+                <p class="eyebrow">个人银行</p>
+                <h1>让资金去向，一目了然</h1>
+                <p class="cover-lede">iBank 个人银行为日常账户、生活缴费、资金往来、月度账单与财富管理提供统一服务。无论是查看余额、处理转账，还是关注风险提醒，都可以在一个清晰、安全的金融空间中完成</p>
                 <div class="portal-line-list" aria-label="个人银行服务">
-                    <span>资金安全：支付密码、交易限额和异常提醒共同守护每一笔钱。</span>
-                    <span>生活账务：缴费、转账、存取款完成后自动进入流水和月账单。</span>
-                    <span>财富陪伴：风险测评、产品匹配、资金冻结和清算过程清楚可追踪。</span>
+                    <span>账户资金，清楚掌握</span>
+                    <span>日常收支，自动归集</span>
+                    <span>安全提醒，及时送达</span>
                 </div>
             </div>
 
             <section class="portal-entry-panel" aria-label="个人银行登录入口">
                 <p class="panel-kicker">个人客户</p>
-                <h2>进入个人金融工作台</h2>
-                <p>前往独立登录页后，系统会带你进入账户、账单、安全提醒和待办服务的工作台。</p>
+                <h2>进入个人银行</h2>
+                <p>管理账户、查看账单、处理转账缴费与服务提醒</p>
                 <% if (flash != null) { %>
                     <div class="alert success"><%= HtmlUtil.escape(String.valueOf(flash)) %></div>
                 <% } %>
@@ -113,9 +113,9 @@
                     <a class="button secondary" href="<%= request.getContextPath() %>/register">开通客户账户</a>
                 </div>
                 <div class="portal-panel-meta">
-                    <span>资产工作台</span>
-                    <span>月账单</span>
-                    <span>服务待办</span>
+                    <span>账户</span>
+                    <span>账单</span>
+                    <span>服务</span>
                 </div>
             </section>
         </div>
@@ -125,7 +125,7 @@
         <div class="portal-bg" aria-hidden="true"></div>
         <div class="portal-slide-inner portal-entry-layout">
             <div class="portal-copy">
-                <p class="eyebrow">OPERATIONS CONSOLE</p>
+                <p class="eyebrow">运营控制台</p>
                 <h1>风险、清算、服务闭环。</h1>
                 <p class="cover-lede">管理端围绕待办闭环组织：客户管理、消息通知、风险事件、理财清算、对账异常、调账复核和审计追踪分工处理。</p>
                 <div class="portal-line-list compact" aria-label="运营管理能力">

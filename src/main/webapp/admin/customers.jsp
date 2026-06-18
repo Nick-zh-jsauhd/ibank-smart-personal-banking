@@ -27,7 +27,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Customers</p>
+        <p class="eyebrow">客户运营</p>
         <h1>客户管理</h1>
         <p class="muted">按姓名、手机号、用户名或风险等级查询客户，进入详情可查看账户、流水、风控和通知。</p>
     </section>

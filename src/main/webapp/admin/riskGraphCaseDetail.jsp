@@ -48,6 +48,7 @@
         if ("STRONG_REVIEW".equals(decision)) return "强化复核";
         if ("REVIEW".equals(decision)) return "人工复核";
         if ("BLOCK".equals(decision)) return "建议阻断";
+        if ("PASS".equals(decision)) return "正常放行";
         return decision == null ? "" : decision;
     }
 %>
@@ -66,12 +67,12 @@
     <title>GNN复核详情 - iBank Admin</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/main.css">
 </head>
-<body class="admin-page">
-<%@ include file="/WEB-INF/jsp/adminTopbar.jspf" %>
+<body class="admin-page lab-page">
+<%@ include file="/WEB-INF/jsp/adminLabTopbar.jspf" %>
 
 <main class="layout layout-wide">
     <section class="page-heading">
-        <p class="eyebrow">RiskBrain Case Detail</p>
+        <p class="eyebrow">复核样本详情</p>
         <h1>GNN复核样本处理</h1>
         <p class="muted">人工结论会保留在复核队列中，用来解释模型误判、识别真实风险，并为后续训练集增强提供反馈。</p>
     </section>
@@ -125,7 +126,7 @@
                         <div><dt>复核编号</dt><dd><%= reviewCase.getCaseId() %></dd></div>
                         <div><dt>图边 ID</dt><dd><%= reviewCase.getGraphEdgeId() %></dd></div>
                         <div><dt>模型版本</dt><dd><%= HtmlUtil.escape(reviewCase.getModelVersion()) %></dd></div>
-                        <div><dt>模型决策</dt><dd><%= HtmlUtil.escape(reviewCase.getModelDecision()) %></dd></div>
+                        <div><dt>模型决策</dt><dd><%= HtmlUtil.escape(businessDecisionLabel(reviewCase.getModelDecision())) %></dd></div>
                         <div><dt>业务建议</dt><dd><%= HtmlUtil.escape(businessDecisionLabel(reviewCase.getBusinessDecision())) %></dd></div>
                         <div><dt>模型置信度</dt><dd><%= probabilityText(reviewCase.getRiskProbability()) %></dd></div>
                         <div><dt>优先级</dt><dd><%= reviewCase.getPriority() %></dd></div>

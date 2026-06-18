@@ -31,7 +31,7 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">New Ticket</p>
+            <p class="eyebrow">新建工单</p>
             <h1>发起服务工单</h1>
             <p class="muted">把诉求、金额、时间、对方账户或业务编号写清楚，后台会自动分配给对应角色处理。</p>
         </div>

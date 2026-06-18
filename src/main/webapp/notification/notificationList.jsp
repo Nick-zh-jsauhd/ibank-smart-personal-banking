@@ -9,6 +9,32 @@
         if ("SERVICE".equals(type)) return "服务工单";
         return type == null ? "系统通知" : type;
     }
+
+    private String businessName(String code) {
+        if ("DEPOSIT".equals(code)) return "存款";
+        if ("WITHDRAW".equals(code)) return "取款";
+        if ("TRANSFER_INNER".equals(code)) return "本行转账";
+        if ("PAYMENT".equals(code)) return "生活缴费";
+        if ("BUY_WEALTH".equals(code)) return "理财申购";
+        if ("REDEEM_WEALTH".equals(code)) return "理财赎回";
+        if ("ACCOUNT_ADJUSTMENT".equals(code)) return "账户调账";
+        if ("TRANSACTION".equals(code)) return "交易";
+        if ("WEALTH".equals(code)) return "理财";
+        if ("RISK".equals(code)) return "风控";
+        if ("SERVICE".equals(code)) return "服务";
+        return code == null ? "" : code;
+    }
+
+    private String businessText(String text) {
+        if (text == null) return "";
+        return text.replace("TRANSFER_INNER", "本行转账")
+                .replace("ACCOUNT_ADJUSTMENT", "账户调账")
+                .replace("REDEEM_WEALTH", "理财赎回")
+                .replace("BUY_WEALTH", "理财申购")
+                .replace("PAYMENT", "生活缴费")
+                .replace("WITHDRAW", "取款")
+                .replace("DEPOSIT", "存款");
+    }
 %>
 <%
     SessionUser loginUser = (SessionUser) session.getAttribute("loginUser");
@@ -34,7 +60,7 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Notification Center</p>
+            <p class="eyebrow">消息中心</p>
             <h1>通知中心</h1>
             <p class="muted">交易、理财、风控、安全和服务事件会在这里形成站内提醒。</p>
         </div>
@@ -119,10 +145,10 @@
                                 <% } %>
                                 <span class="muted"><%= notification.getCreatedAt() == null ? "" : notification.getCreatedAt().toString().substring(0, 19) %></span>
                             </div>
-                            <strong><%= HtmlUtil.escape(notification.getTitle()) %></strong>
-                            <p><%= HtmlUtil.escape(notification.getContent()) %></p>
+                            <strong><%= HtmlUtil.escape(businessText(notification.getTitle())) %></strong>
+                            <p><%= HtmlUtil.escape(businessText(notification.getContent())) %></p>
                             <% if (notification.getBusinessId() != null && notification.getBusinessId().length() > 0) { %>
-                                <p class="cell-note">关联业务：<%= HtmlUtil.escape(notification.getBusinessType()) %> / <%= HtmlUtil.escape(notification.getBusinessId()) %></p>
+                                <p class="cell-note">关联业务：<%= HtmlUtil.escape(businessName(notification.getBusinessType())) %> / <%= HtmlUtil.escape(notification.getBusinessId()) %></p>
                             <% } %>
                         </div>
                         <% if (!notification.isReadFlag()) { %>

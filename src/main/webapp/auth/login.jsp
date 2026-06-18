@@ -31,7 +31,7 @@
 
     <section class="access-layout client">
         <div class="access-copy" aria-label="个人银行说明">
-            <p class="access-kicker">Personal banking access</p>
+            <p class="access-kicker">个人银行登录</p>
             <h1>进入前，先知道今天会看到什么。</h1>
             <p>登录后，系统会把账户余额、月账单、安全提醒、理财持仓和服务进度合并到工作台，先给你一张清楚的资金地图。</p>
             <div class="access-path" aria-label="登录后路径">

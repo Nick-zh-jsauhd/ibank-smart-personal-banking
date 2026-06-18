@@ -15,6 +15,13 @@
         if ("BUY_WEALTH".equals(txnType)) return "理财申购";
         return txnType == null ? "" : txnType;
     }
+
+    private String ruleDisplayName(RiskLimitRule rule) {
+        if (rule == null) {
+            return "";
+        }
+        return txnTypeName(rule.getTxnType()) + " · " + rule.getCustomerRiskLevel() + " 客户";
+    }
 %>
 <%
     AdminSessionUser adminUser = (AdminSessionUser) session.getAttribute("adminUser");
@@ -36,7 +43,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Risk Rules</p>
+        <p class="eyebrow">限额规则</p>
         <h1>风控规则管理</h1>
         <p class="muted">管理资金流出类交易的单笔限额、日累计限额、日笔数上限和启用状态。</p>
     </section>
@@ -79,14 +86,14 @@
         <div class="section-title">
             <div>
                 <h2>限额规则</h2>
-                <p class="section-note">状态为 ACTIVE 的规则会参与交易风控校验；DISABLED 会让该等级回退到 C3 规则，C3 也关闭时交易将无法通过限额校验。</p>
+                <p class="section-note">启用规则会参与交易风控校验；停用规则会让该等级回退到 C3 规则，C3 也关闭时交易将无法通过限额校验。</p>
             </div>
         </div>
         <div class="table-wrap">
             <table class="wide-table admin-edit-table">
                 <thead>
                 <tr>
-                    <th>规则编码</th>
+                    <th>规则名称</th>
                     <th>交易类型</th>
                     <th>客户等级</th>
                     <th>单笔限额</th>
@@ -112,7 +119,8 @@
                                 <input type="hidden" name="filterTxnType" value="<%= HtmlUtil.escape(selectedTxnType) %>">
                                 <input type="hidden" name="filterRiskLevel" value="<%= HtmlUtil.escape(selectedRiskLevel) %>">
                             </form>
-                            <strong><%= HtmlUtil.escape(rule.getRuleCode()) %></strong>
+                            <strong><%= HtmlUtil.escape(ruleDisplayName(rule)) %></strong>
+                            <p class="cell-note">规则编号 #<%= rule.getRuleId() %></p>
                         </td>
                         <td><%= HtmlUtil.escape(txnTypeName(rule.getTxnType())) %></td>
                         <td><span class="tag"><%= HtmlUtil.escape(rule.getCustomerRiskLevel()) %></span></td>
@@ -121,8 +129,8 @@
                         <td><input form="<%= formId %>" class="admin-count-input" name="dailyCountLimit" value="<%= rule.getDailyCountLimit() %>"></td>
                         <td>
                             <select form="<%= formId %>" class="admin-status-select" name="status">
-                                <option value="ACTIVE" <%= active ? "selected" : "" %>>ACTIVE</option>
-                                <option value="DISABLED" <%= active ? "" : "selected" %>>DISABLED</option>
+                                <option value="ACTIVE" <%= active ? "selected" : "" %>>启用</option>
+                                <option value="DISABLED" <%= active ? "" : "selected" %>>停用</option>
                             </select>
                         </td>
                         <td><%= rule.getUpdatedAt() == null ? "" : rule.getUpdatedAt().toString().substring(0, 19) %></td>
@@ -130,7 +138,7 @@
                             <% if (adminUser.hasPermission("RISK_RULE_UPDATE")) { %>
                             <button form="<%= formId %>" class="button primary compact" type="submit">保存</button>
                             <% } %>
-                            <span class="direction <%= active ? "direction-in" : "direction-out" %>"><%= HtmlUtil.escape(rule.getStatus()) %></span>
+                            <span class="direction <%= active ? "direction-in" : "direction-out" %>"><%= active ? "启用" : "停用" %></span>
                         </td>
                     </tr>
                 <%  }

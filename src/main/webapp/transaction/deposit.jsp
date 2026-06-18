@@ -30,7 +30,7 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Deposit</p>
+            <p class="eyebrow">存款入账</p>
             <h1>模拟存款</h1>
             <p class="muted">真实更新账户余额，并同步生成交易主记录和收入流水。</p>
         </div>

@@ -58,7 +58,7 @@
     <section class="result-panel">
         <div class="result-status-mark"><%= pending ? "PENDING" : "SUCCESS" %></div>
         <div>
-            <p class="eyebrow">Transaction Result</p>
+            <p class="eyebrow">交易结果</p>
             <h1><%= pending ? "业务已提交，等待后续处理。" : "这笔交易已完成。" %></h1>
             <p class="muted"><%= pending
                     ? "当前只是进入业务处理队列，理财申购需后台确认后生成持仓，赎回需清算到账后才更新账户余额。"

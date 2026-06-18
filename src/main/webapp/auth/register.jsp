@@ -21,7 +21,7 @@
     <section class="auth-layout">
     <aside class="auth-visual">
         <div>
-            <p class="eyebrow">Account Opening</p>
+            <p class="eyebrow">客户开户</p>
             <h1>开通后，我们会先帮你准备账户、账单和安全保护。</h1>
             <p class="muted">注册链路保持简单，但后台会同步建立客户档案、默认储蓄账户和风险等级，方便后续转账、缴费、理财与服务跟进。</p>
         </div>

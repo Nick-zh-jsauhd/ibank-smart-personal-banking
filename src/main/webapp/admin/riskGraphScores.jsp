@@ -43,6 +43,13 @@
         return "severity-success";
     }
 
+    private String decisionName(String decision) {
+        if ("BLOCK".equals(decision)) return "建议阻断";
+        if ("REVIEW".equals(decision)) return "人工复核";
+        if ("PASS".equals(decision)) return "正常放行";
+        return decision == null ? "未评分" : decision;
+    }
+
     private String severityClass(String severity) {
         return severity == null || severity.length() == 0 ? "severity-info" : severity;
     }
@@ -81,14 +88,14 @@
     <title>GNN风险评分 - iBank</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/main.css">
 </head>
-<body class="admin-page">
-<%@ include file="/WEB-INF/jsp/adminTopbar.jspf" %>
+<body class="admin-page lab-page">
+<%@ include file="/WEB-INF/jsp/adminLabTopbar.jspf" %>
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">RiskBrain Graph Model</p>
+        <p class="eyebrow">图谱评分模型</p>
         <h1>GNN风险评分看板</h1>
-        <p class="muted">查看图神经网络对外部交易图边的风险排序结果，优先核查 BLOCK 和 REVIEW 高分边。</p>
+        <p class="muted">查看图神经网络对外部交易图边的风险排序结果，优先核查建议阻断和人工复核的高分边。</p>
     </section>
 
     <% if (error != null) { %>
@@ -98,7 +105,7 @@
     <section class="content-section admin-decision-strip">
         <div class="section-title-row">
             <div>
-                <p class="eyebrow">Operator Decision Layer</p>
+                <p class="eyebrow">运营决策层</p>
                 <h2>先看业务结论，再看模型细节</h2>
                 <p class="muted">这张看板不是让管理员直接相信分数，而是把模型线索转成可执行的复核顺序。</p>
             </div>
@@ -107,7 +114,7 @@
         <div class="admin-decision-grid">
             <article class="admin-decision-card danger">
                 <span>第一优先级</span>
-                <strong>BLOCK 高分边</strong>
+                <strong>建议阻断高分边</strong>
                 <p>优先查看是否存在大额、集中、拆分或中转链路；生产环境不能只凭模型分直接冻结。</p>
             </article>
             <article class="admin-decision-card warning">
@@ -132,17 +139,17 @@
                     : "非运营模型，仅用于对比、回测或专项排查" %></small>
         </article>
         <article class="metric-card danger">
-            <span>BLOCK</span>
+            <span>建议阻断</span>
             <strong><%= summary.getBlockCount() %></strong>
             <small>标签命中率 <%= rate(summary.getBlockFraudCount(), summary.getBlockCount()) %></small>
         </article>
         <article class="metric-card warning">
-            <span>REVIEW</span>
+            <span>人工复核</span>
             <strong><%= summary.getReviewCount() %></strong>
             <small>标签命中率 <%= rate(summary.getReviewFraudCount(), summary.getReviewCount()) %></small>
         </article>
         <article class="metric-card">
-            <span>PASS</span>
+            <span>正常放行</span>
             <strong><%= summary.getPassCount() %></strong>
             <small>标签命中率 <%= rate(summary.getPassFraudCount(), summary.getPassCount()) %></small>
         </article>
@@ -151,7 +158,7 @@
     <section class="content-section">
         <div class="section-title-row">
             <div>
-                <p class="eyebrow">Model Evidence</p>
+                <p class="eyebrow">模型证据</p>
                 <h2>评分分层说明</h2>
             </div>
             <span class="tag">总评分 <%= summary.getTotalScores() %> 条</span>
@@ -170,7 +177,7 @@
             <div class="admin-insight-card">
                 <span>复核阈值</span>
                 <strong><%= probabilityText(summary.getReviewThreshold()) %></strong>
-                <p>达到该概率进入人工复核队列；达到阻断阈值则进入 BLOCK 队列。</p>
+                <p>达到该概率进入人工复核队列；达到阻断阈值则进入建议阻断队列。</p>
             </div>
             <div class="admin-insight-card">
                 <span>阻断阈值</span>
@@ -199,9 +206,9 @@
                 <span>决策</span>
                 <select name="decision">
                     <option value="">全部</option>
-                    <option value="BLOCK" <%= "BLOCK".equals(selectedDecision) ? "selected" : "" %>>BLOCK</option>
-                    <option value="REVIEW" <%= "REVIEW".equals(selectedDecision) ? "selected" : "" %>>REVIEW</option>
-                    <option value="PASS" <%= "PASS".equals(selectedDecision) ? "selected" : "" %>>PASS</option>
+                    <option value="BLOCK" <%= "BLOCK".equals(selectedDecision) ? "selected" : "" %>>建议阻断</option>
+                    <option value="REVIEW" <%= "REVIEW".equals(selectedDecision) ? "selected" : "" %>>人工复核</option>
+                    <option value="PASS" <%= "PASS".equals(selectedDecision) ? "selected" : "" %>>正常放行</option>
                 </select>
             </label>
             <label>
@@ -232,9 +239,9 @@
     <section class="content-section graph-evidence-section" id="graphEvidence">
         <div class="section-title-row">
             <div>
-                <p class="eyebrow">Graph Evidence</p>
+                <p class="eyebrow">图谱证据</p>
                 <h2>局部风险证据图谱</h2>
-                <p class="muted">选择下方任意高分图边，查看它的来源账户、目标账户和一跳相邻交易。红色代表 BLOCK，金色代表 REVIEW，虚线代表真实洗钱标签。</p>
+                <p class="muted">选择下方任意高分图边，查看它的来源账户、目标账户和一跳相邻交易。红色代表建议阻断，金色代表人工复核，虚线代表真实洗钱标签。</p>
             </div>
             <span class="tag" id="graphStatus">等待选择图边</span>
         </div>
@@ -244,8 +251,8 @@
                     <div class="risk-graph-legend">
                         <span><i class="legend-dot source"></i>来源账户</span>
                         <span><i class="legend-dot target"></i>目标账户</span>
-                        <span><i class="legend-line block"></i>BLOCK</span>
-                        <span><i class="legend-line review"></i>REVIEW</span>
+                        <span><i class="legend-line block"></i>建议阻断</span>
+                        <span><i class="legend-line review"></i>人工复核</span>
                         <span><i class="legend-line conflict"></i>标签冲突</span>
                         <span><i class="legend-line fraud"></i>洗钱标签</span>
                     </div>
@@ -264,17 +271,17 @@
                 <div class="risk-graph-summary" id="riskGraphSummary">
                     <span>节点 0</span>
                     <span>图边 0</span>
-                    <span>BLOCK 0</span>
+                    <span>建议阻断 0</span>
                     <span>标签 0</span>
                 </div>
             </div>
             <aside class="risk-graph-detail" id="riskGraphDetail">
-                <p class="eyebrow">Evidence Detail</p>
+                <p class="eyebrow">证据详情</p>
                 <h3>图谱证据说明</h3>
                 <p>当前图谱只展示中心交易的一跳邻域，避免把 18 万节点的训练图直接塞进浏览器。它用于辅助研判，不直接替代风控处置结论。</p>
                 <dl>
                     <div><dt>节点颜色</dt><dd>蓝色为来源，绿色为目标，深色为相邻账户</dd></div>
-                    <div><dt>边颜色</dt><dd>红色 BLOCK，金色 REVIEW，灰色 PASS</dd></div>
+                    <div><dt>边颜色</dt><dd>红色建议阻断，金色人工复核，灰色正常放行</dd></div>
                     <div><dt>虚线</dt><dd>数据集真实标签中标记为洗钱的交易边</dd></div>
                 </dl>
             </aside>
@@ -284,7 +291,7 @@
     <section class="content-section">
         <div class="section-title-row">
             <div>
-                <p class="eyebrow">Top Scored Edges</p>
+                <p class="eyebrow">高分交易边</p>
                 <h2>高风险图边列表</h2>
             </div>
             <span class="tag">最多显示 200 条</span>
@@ -316,7 +323,7 @@
                     for (AdminRiskGraphScoreView score : scores) {
                 %>
                     <tr>
-                        <td><span class="tag <%= decisionClass(score.getDecision()) %>"><%= HtmlUtil.escape(score.getDecision()) %></span></td>
+                        <td><span class="tag <%= decisionClass(score.getDecision()) %>"><%= HtmlUtil.escape(decisionName(score.getDecision())) %></span></td>
                         <td><strong><%= score.getRiskScore() %></strong></td>
                         <td><%= probabilityText(score.getRiskProbability()) %></td>
                         <td>
@@ -403,6 +410,13 @@ try {
         });
     }
 
+    function decisionLabel(value) {
+        if (value === 'BLOCK') return '建议阻断';
+        if (value === 'REVIEW') return '人工复核';
+        if (value === 'PASS') return '正常放行';
+        return value || '未评分';
+    }
+
     function money(value, currency) {
         if (value === null || value === undefined) {
             return escapeHtml(currency || '') + ' 0.00';
@@ -442,29 +456,29 @@ try {
         summary.innerHTML =
             '<span>节点 ' + data.nodeCount + '</span>' +
             '<span>图边 ' + data.edgeCount + '</span>' +
-            '<span>BLOCK ' + data.blockEdgeCount + '</span>' +
-            '<span>REVIEW ' + data.reviewEdgeCount + '</span>' +
+            '<span>建议阻断 ' + data.blockEdgeCount + '</span>' +
+            '<span>人工复核 ' + data.reviewEdgeCount + '</span>' +
             '<span>标签 ' + data.fraudEdgeCount + '</span>';
     }
 
     function showOverview(data) {
         detail.innerHTML =
-            '<p class="eyebrow">Graph Evidence</p>' +
+            '<p class="eyebrow">图谱证据</p>' +
             '<h3>局部证据概览</h3>' +
             '<p>本次展示中心图边的一跳邻域，用于解释模型为什么把这条交易排在高风险队列中。</p>' +
             '<dl>' +
             '<div><dt>模型版本</dt><dd>' + escapeHtml(data.modelVersion) + '</dd></div>' +
             '<div><dt>节点 / 图边</dt><dd>' + data.nodeCount + ' / ' + data.edgeCount + '</dd></div>' +
-            '<div><dt>BLOCK / REVIEW</dt><dd>' + data.blockEdgeCount + ' / ' + data.reviewEdgeCount + '</dd></div>' +
+            '<div><dt>阻断 / 复核</dt><dd>' + data.blockEdgeCount + ' / ' + data.reviewEdgeCount + '</dd></div>' +
             '<div><dt>真实洗钱标签</dt><dd>' + data.fraudEdgeCount + ' 条</dd></div>' +
             '</dl>';
     }
 
     function showNode(node) {
         detail.innerHTML =
-            '<p class="eyebrow">Selected Node</p>' +
+            '<p class="eyebrow">选中节点</p>' +
             '<h3>' + escapeHtml(node.label) + '</h3>' +
-            '<p>节点代表外部交易图中的账户或机构实体。风险人员可以关注它是否连接了多条 BLOCK/REVIEW 边。</p>' +
+            '<p>节点代表外部交易图中的账户或机构实体。风险人员可以关注它是否连接了多条建议阻断或人工复核边。</p>' +
             '<dl>' +
             '<div><dt>外部 ID</dt><dd>' + escapeHtml(node.externalId) + '</dd></div>' +
             '<div><dt>节点类型</dt><dd>' + escapeHtml(node.nodeType) + '</dd></div>' +
@@ -477,8 +491,8 @@ try {
 
     function showEdge(edge) {
         detail.innerHTML =
-            '<p class="eyebrow">Selected Edge</p>' +
-            '<h3>' + escapeHtml(edge.decision) + ' · ' + edge.riskScore + '</h3>' +
+            '<p class="eyebrow">选中交易边</p>' +
+            '<h3>' + escapeHtml(decisionLabel(edge.decision)) + ' · ' + edge.riskScore + '</h3>' +
             '<p>边代表一次交易或资金流动。中心边是你在表格中选择的那笔交易，相邻边用于判断是否存在拆分、汇聚或中转迹象。业务建议不会直接等同于模型概率。</p>' +
             '<dl>' +
             '<div><dt>业务建议</dt><dd>' + escapeHtml(edge.businessDecisionLabel) + '</dd></div>' +
@@ -649,8 +663,27 @@ try {
             document.getElementById('graphEvidence').scrollIntoView({behavior: 'smooth', block: 'start'});
             var url = endpoint + '?graphEdgeId=' + encodeURIComponent(button.getAttribute('data-edge-id')) +
                 '&modelVersion=' + encodeURIComponent(button.getAttribute('data-model-version') || '');
-            fetch(url, {headers: {'Accept': 'application/json'}})
+            fetch(url, {
+                credentials: 'same-origin',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
                 .then(function (response) {
+                    var contentType = response.headers.get('Content-Type') || '';
+                    if (contentType.indexOf('application/json') === -1) {
+                        return response.text().then(function (text) {
+                            if (response.status === 401 || text.indexOf('/admin/login') >= 0
+                                    || text.indexOf('进入运营控制台') >= 0) {
+                                throw new Error('后台登录已过期，请重新登录后再查看图谱。');
+                            }
+                            if (response.status === 403 || text.indexOf('requiredPermission') >= 0) {
+                                throw new Error('当前账号没有查看图谱的权限。');
+                            }
+                            throw new Error('图谱接口返回了非 JSON 页面，请刷新后重试。');
+                        });
+                    }
                     return response.json().then(function (data) {
                         if (!response.ok || !data.success) {
                             throw new Error(data.message || '图谱接口返回异常。');

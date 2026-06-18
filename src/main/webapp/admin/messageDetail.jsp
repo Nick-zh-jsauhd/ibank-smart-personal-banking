@@ -49,7 +49,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Message Detail</p>
+        <p class="eyebrow">消息详情</p>
         <h1>消息详情</h1>
         <p class="muted">查看告警来源、责任角色和当前处理状态，并完成确认、解决或关闭。</p>
     </section>

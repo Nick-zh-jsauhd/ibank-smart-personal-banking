@@ -19,7 +19,7 @@
     <section class="content-section">
         <div class="section-title">
             <div>
-                <p class="eyebrow">Forbidden</p>
+                <p class="eyebrow">访问受限</p>
                 <h1>无权限访问</h1>
                 <p class="section-note">当前管理员账号没有执行该后台操作所需的权限。</p>
             </div>

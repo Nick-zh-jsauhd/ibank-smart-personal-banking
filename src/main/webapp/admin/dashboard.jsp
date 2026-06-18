@@ -16,7 +16,6 @@
     int openServiceTickets = metrics == null ? 0 : metrics.getOpenServiceTicketCount();
     int openAdjustments = metrics == null ? 0 : metrics.getOpenAdjustmentReviewCount();
     int openReconciliationItems = metrics == null ? 0 : metrics.getOpenReconciliationItemCount();
-    int openGraphCases = metrics == null ? 0 : metrics.getOpenRiskGraphReviewCaseCount();
     int openActionCount = openAdminAlerts + openServiceTickets + openAdjustments + openReconciliationItems;
 %>
 <!DOCTYPE html>
@@ -32,7 +31,7 @@
 <main class="layout layout-wide">
     <section class="dashboard-hero admin-ops-hero">
         <div class="hero-panel">
-            <p class="eyebrow">Operations Command</p>
+            <p class="eyebrow">运营指挥台</p>
             <h1>运营控制台</h1>
             <p class="muted">把客户、交易、风控、工单、对账和调账收敛成一张运营看板，优先处理需要人工介入的业务风险。</p>
             <div class="admin-hero-actions">
@@ -61,8 +60,8 @@
                     <strong><%= openAdjustments + openReconciliationItems %></strong>
                 </div>
                 <div class="hero-mini">
-                    <span>GNN样本池</span>
-                    <strong><%= openGraphCases %></strong>
+                    <span>站内通知</span>
+                    <strong><%= metrics == null ? 0 : metrics.getUnreadNotificationCount() %></strong>
                 </div>
             </div>
         </aside>
@@ -115,8 +114,8 @@
                 <strong><%= metrics.getOpenReconciliationItemCount() %></strong>
             </article>
             <article class="metric-card danger">
-                <span>GNN待复核样本</span>
-                <strong><%= metrics.getOpenRiskGraphReviewCaseCount() %></strong>
+                <span>今日风控拦截</span>
+                <strong><%= metrics.getTodayRiskBlockCount() %></strong>
             </article>
             <article class="metric-card">
                 <span>理财持仓本金</span>
@@ -164,14 +163,14 @@
                         <em><%= openAdjustments %></em>
                     </a>
                 <% } %>
-                <% if (adminUser.hasPermission("RISK_GRAPH_CASE_VIEW")) { %>
-                    <a class="admin-task-card" href="<%= request.getContextPath() %>/admin/risk/graph-cases?caseStatus=OPEN">
+                <% if (adminUser.hasPermission("RISK_EVENT_VIEW")) { %>
+                    <a class="admin-task-card" href="<%= request.getContextPath() %>/admin/risk/events">
                         <span class="task-rank">04</span>
                         <div>
-                            <strong>抽样复核 GNN 标签冲突</strong>
-                            <p>当前样本池 <%= openGraphCases %> 条，优先抽查高分冲突样本，人工结论会进入后续训练反馈。</p>
+                            <strong>核查异常交易事件</strong>
+                            <p>优先确认大额、频繁、夜间或规则命中的交易，必要时冻结账户或转入工单。</p>
                         </div>
-                        <em>抽样</em>
+                        <em><%= metrics == null ? 0 : metrics.getTodayRiskBlockCount() %></em>
                     </a>
                 <% } %>
             </div>

@@ -3,6 +3,7 @@ package com.bank.filter;
 import com.bank.dto.AdminSessionUser;
 import com.bank.service.PermissionService;
 import com.bank.service.impl.PermissionServiceImpl;
+import com.bank.util.JsonUtil;
 import com.bank.util.RequestUtil;
 
 import java.io.IOException;
@@ -41,6 +42,11 @@ public class AdminAuthFilter implements Filter {
 
         HttpSession session = httpRequest.getSession(false);
         if (session == null || session.getAttribute("adminUser") == null) {
+            if (wantsJson(httpRequest)) {
+                writeJsonError(httpResponse, HttpServletResponse.SC_UNAUTHORIZED,
+                        "后台登录已过期，请重新登录后再查看图谱。");
+                return;
+            }
             String next = URLEncoder.encode(httpRequest.getRequestURI(), "UTF-8");
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/admin/login?next=" + next);
             return;
@@ -58,6 +64,11 @@ public class AdminAuthFilter implements Filter {
             if (!permissionService.hasPermission(refreshedPermissions, requiredPermission)) {
                 permissionService.auditDenied(adminUser.getUserId(), requiredPermission, path,
                         httpRequest.getMethod(), RequestUtil.clientIp(httpRequest));
+                if (wantsJson(httpRequest)) {
+                    writeJsonError(httpResponse, HttpServletResponse.SC_FORBIDDEN,
+                            "当前账号没有访问该图谱接口的权限。");
+                    return;
+                }
                 httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 httpRequest.setAttribute("requiredPermission", requiredPermission);
                 httpRequest.setAttribute("requestPath", path);
@@ -74,5 +85,19 @@ public class AdminAuthFilter implements Filter {
 
     private boolean isDirectJspRequest(String path) {
         return path != null && path.endsWith(".jsp") && !"/admin/forbidden.jsp".equals(path);
+    }
+
+    private boolean wantsJson(HttpServletRequest request) {
+        String accept = request.getHeader("Accept");
+        String requestedWith = request.getHeader("X-Requested-With");
+        return (accept != null && accept.toLowerCase().contains("application/json"))
+                || "XMLHttpRequest".equalsIgnoreCase(requestedWith);
+    }
+
+    private void writeJsonError(HttpServletResponse response, int status, String message) throws IOException {
+        response.setStatus(status);
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write("{\"success\":false,\"message\":" + JsonUtil.quote(message) + "}");
     }
 }

@@ -18,7 +18,7 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Security</p>
+            <p class="eyebrow">安全中心</p>
             <h1>支付密码</h1>
             <p class="muted">支付密码用于取款、转账、缴费、理财申购和赎回等资金操作。</p>
         </div>
@@ -34,7 +34,7 @@
 
     <section class="photo-band security">
         <div>
-            <p class="eyebrow">Security Care</p>
+            <p class="eyebrow">安全提醒</p>
             <h2>支付前多一步确认，就是给账户多一层保护。</h2>
             <p class="section-note">支付密码只用于资金操作。遇到陌生来电、屏幕共享、代办转账等情况，请先暂停交易并查看风控提醒。</p>
         </div>

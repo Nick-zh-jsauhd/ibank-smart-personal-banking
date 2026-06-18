@@ -63,7 +63,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Risk Case</p>
+        <p class="eyebrow">风控处置</p>
         <h1>风控事件处置</h1>
         <p class="muted">查看事件上下文，记录处置结论，并按需冻结或解冻关联账户。</p>
     </section>

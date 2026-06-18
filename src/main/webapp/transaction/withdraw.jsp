@@ -30,7 +30,7 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Withdraw</p>
+            <p class="eyebrow">现金取款</p>
             <h1>模拟取款</h1>
             <p class="muted">校验支付密码、账户余额和风控限额后生成出账流水。</p>
         </div>

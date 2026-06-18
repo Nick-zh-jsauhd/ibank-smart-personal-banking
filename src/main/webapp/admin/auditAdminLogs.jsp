@@ -47,7 +47,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Admin Audit Logs</p>
+        <p class="eyebrow">操作审计</p>
         <h1>管理员操作日志</h1>
         <p class="muted">查询后台敏感操作、越权访问和关键业务变更记录。</p>
     </section>

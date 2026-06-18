@@ -75,7 +75,7 @@
 
 <main class="layout layout-wide">
     <section class="page-heading">
-        <p class="eyebrow">Adjustment Detail</p>
+        <p class="eyebrow">调账详情</p>
         <h1>调账申请详情</h1>
         <p class="muted">复核与执行分离，申请人不能复核或执行自己的申请。</p>
     </section>

@@ -50,7 +50,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Risk Events</p>
+        <p class="eyebrow">风控事件</p>
         <h1>后台风控事件</h1>
         <p class="muted">全局查看客户资金流出交易触发的 WARN 和 BLOCK 风险事件，并进入处置闭环。</p>
     </section>

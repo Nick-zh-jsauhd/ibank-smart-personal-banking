@@ -55,7 +55,7 @@
 
 <main class="layout">
     <section class="page-heading">
-        <p class="eyebrow">Message Center</p>
+        <p class="eyebrow">消息待办</p>
         <h1>后台消息中心</h1>
         <p class="muted">集中处理风控拦截、对账异常、调账复核等需要管理端跟进的业务告警和待办。</p>
     </section>

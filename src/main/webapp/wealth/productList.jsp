@@ -54,7 +54,7 @@
 <main class="layout">
     <section class="compact-page-head">
         <div class="page-heading">
-            <p class="eyebrow">Wealth</p>
+            <p class="eyebrow">理财产品</p>
             <h1>理财产品</h1>
             <p class="muted">按风险等级、期限、确认到账规则和参考年化选择适合的产品。</p>
         </div>
@@ -71,7 +71,7 @@
 
     <section class="photo-band wealth">
         <div>
-            <p class="eyebrow">Wealth Companion</p>
+            <p class="eyebrow">财富陪伴</p>
             <h2>理财不是只看收益，也要看期限、风险和这笔钱的用途。</h2>
             <p class="section-note">申购前系统会核对你的风险等级、账户余额、起购金额和支付密码。产品参考年化不代表保证收益。</p>
         </div>
